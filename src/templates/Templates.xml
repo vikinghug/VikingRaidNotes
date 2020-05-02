@@ -3,11 +3,11 @@
   <Include file="Atoms\ScrollFrame.xml" />
   <Include file="Atoms\SetButton.xml" />
 
+  <Include file="Molecules\CollapseExpandButton.xml" />
+
   <Include file="Notes\NoteTitleBar.xml" />
   <Include file="Notes\Note.xml" />
   <Include file="Notes\NotesWindow.xml" />
 
   <Include file="SetsListTemplate.xml" />
-  <Include file="VikingRaidNotes.xml" />
-
 </Ui>

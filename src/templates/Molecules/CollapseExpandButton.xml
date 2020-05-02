@@ -1,50 +1,5 @@
 <Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
-  <Script file="VikingRaidNotes.lua" />
-
-  <Frame name="VikingRaidNotesFrame" enableMouse="true" movable="true" parent="UIParent" virtual="true">
-    <!-- <ResizeBounds>
-      <minResize x="256" y="256">
-      <maxResize x="2000" y="2000">
-    </ResizeBounds> -->
-
-    <Scripts>
-      <OnLoad>
-        self:RegisterForDrag("LeftButton")
-        self:SetClampedToScreen(true)
-      </OnLoad>
-      <OnDragStart>
-        if not self.isLocked then
-          self:StartMoving()
-        end
-      </OnDragStart>
-      <OnDragStop>
-        self:StopMovingOrSizing()
-      </OnDragStop>
-    </Scripts>
-
-    <Size x="256" y="128" />
-
-    <Anchors>
-      <Anchor point="CENTER" relativeTo="UIParent" />
-    </Anchors>
-
-    <!-- <Layers>
-      <Layer level="BACKGROUND">
-        <Texture setAllPoints="true">
-          <Color r="1.0" g="0.5" b="0.0" a="0.5" />
-        </Texture>
-      </Layer>
-    </Layers> -->
-
-    <Frames>
-      <Frame name="VRNNotesWindow" inherits="VRNNotesWindowTemplate" parentKey="NotesWindow">
-        <Anchors>
-          <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="TOPLEFT" />
-          <Anchor point="TOPRIGHT" relativeKey="$parent" relativepoint="TOPRIGHT" />
-        </Anchors>
-      </Frame>
-    </Frames>
-  </Frame>
+  <Script file="CollapseExpandButton.lua" />
 
   <Button name="VRNCollapseButtonTemplate" parentKey="CollapseButton" inherits="VRNIconButtonTemplate" virtual="true">
     <Size x="12" y="12" />

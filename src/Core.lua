@@ -11,8 +11,10 @@ function addon:OnInitialize()
   self.Settings:OnLoad()
   -- self.Options:OnLoad()
 
-  addon:BindViewToController(addon.Events, "VRNUI.Events")
-
   self.Frame = CreateFrame("Frame", "VikingRaidNotesFrame", UIParent, "VRNNotesWindowTemplate")
+
+  self.Events = CreateFrame("Frame", "VRNEvents", UIParent)
+  addon:BindViewToController(self.Events, "VRNUI.Events")
+
   self.Sets = CreateFrame("Frame", "VRNSetsList", UIParent, "VRNSetsListTemplate")
 end
