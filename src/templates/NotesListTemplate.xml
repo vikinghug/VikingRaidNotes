@@ -1,0 +1,37 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+  <Script file="NotesListTemplate.lua" />
+  <Frame name="VRNNotesListTemplate" virtual="true">
+    <Size x="128" y="128" />
+
+    <Scripts>
+    </Scripts>
+
+    <Layers>
+      <Layer level="OVERLAY">
+        <Texture setAllPoints="true">
+          <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.8" />
+        </Texture>
+      </Layer>
+    </Layers>
+
+    <Frames>
+      <Frame name="$parentScrollFrame" inherits="VRNScrollFrameTemplate" parentKey="ScrollFrame">
+        <Size x="128" y="128" />
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" />
+					<Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativePoint="BOTTOMRIGHT" />
+				</Anchors>
+
+        <Scripts>
+          <OnLoad>
+            VikingRaidNotes:BindViewToController(self, "VRNUI.NotesList")
+          </OnLoad>
+          <OnShow>
+            self:OnShow()
+          </OnShow>
+        </Scripts>
+      </Frame>
+    </Frames>
+
+  </Frame>
+</Ui>

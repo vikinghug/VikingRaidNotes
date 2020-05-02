@@ -1,0 +1,98 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+  <Script file="VikingRaidNotes.lua" />
+
+  <Frame name="VikingRaidNotesFrame" enableMouse="true" movable="true" parent="UIParent" virtual="true">
+    <!-- <ResizeBounds>
+      <minResize x="256" y="256">
+      <maxResize x="2000" y="2000">
+    </ResizeBounds> -->
+
+    <Scripts>
+      <OnLoad>
+        self:RegisterForDrag("LeftButton")
+        self:SetClampedToScreen(true)
+      </OnLoad>
+      <OnDragStart>
+        if not self.isLocked then
+          self:StartMoving()
+        end
+      </OnDragStart>
+      <OnDragStop>
+        self:StopMovingOrSizing()
+      </OnDragStop>
+    </Scripts>
+
+    <Size x="256" y="128" />
+
+    <Anchors>
+      <Anchor point="CENTER" relativeTo="UIParent" />
+    </Anchors>
+
+    <!-- <Layers>
+      <Layer level="BACKGROUND">
+        <Texture setAllPoints="true">
+          <Color r="1.0" g="0.5" b="0.0" a="0.5" />
+        </Texture>
+      </Layer>
+    </Layers> -->
+
+    <Frames>
+      <Frame name="VRNNotesWindow" inherits="VRNNotesWindowTemplate" parentKey="NotesWindow">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="TOPLEFT" />
+          <Anchor point="TOPRIGHT" relativeKey="$parent" relativepoint="TOPRIGHT" />
+        </Anchors>
+      </Frame>
+    </Frames>
+  </Frame>
+
+  <Button name="VRNCollapseButtonTemplate" parentKey="CollapseButton" inherits="VRNIconButtonTemplate" virtual="true">
+    <Size x="12" y="12" />
+
+    <Scripts>
+      <OnLoad>
+        VikingRaidNotes:BindViewToController(self, "VRNUI.CollapseButton", "VRNUI.IconButton")
+      </OnLoad>
+      <OnEnter>
+        self:OnEnter()
+      </OnEnter>
+      <OnLeave>
+        self:OnLeave()
+      </OnLeave>
+    </Scripts>
+
+    <KeyValues>
+      <KeyValue key="Sprite" value="collapse" />
+      <KeyValue key="IconColor" value="1,1,1,0.25" />
+    </KeyValues>
+
+    <Anchors>
+      <Anchor point="RIGHT" x="-6" />
+    </Anchors>
+  </Button>
+
+  <Button name="VRNExpandButtonTemplate" parentKey="ExpandButton" inherits="VRNIconButtonTemplate" virtual="true">
+    <Size x="12" y="12" />
+
+    <Scripts>
+      <OnLoad>
+        VikingRaidNotes:BindViewToController(self, "VRNUI.ExpandButton", "VRNUI.IconButton")
+      </OnLoad>
+      <OnEnter>
+        self:OnEnter()
+      </OnEnter>
+      <OnLeave>
+        self:OnLeave()
+      </OnLeave>
+    </Scripts>
+
+    <KeyValues>
+      <KeyValue key="Sprite" value="expand" />
+      <KeyValue key="IconColor" value="1,1,1,0.25" />
+    </KeyValues>
+
+    <Anchors>
+      <Anchor point="RIGHT" x="-6" />
+    </Anchors>
+  </Button>
+</Ui>

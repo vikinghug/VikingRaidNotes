@@ -1,0 +1,78 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+  <Script file="ScrollFrame.lua" />
+  <Frame name="VRNScrollFrameTemplate" virtual="true">
+    <Frames>
+      <ScrollFrame name="$parentScrollFrame" parentKey="ScrollFrame">
+        <Size x="128" y="128"/>
+        <Anchors>
+          <Anchor point="TOPLEFT"/>
+          <Anchor point="BOTTOMRIGHT"/>
+        </Anchors>
+
+        <!-- <Layers>
+          <Layer level="BACKGROUND">
+            <Texture setAllPoints="true">
+              <Color r="0.0" g="0.0" b="0.0" a="0.25" />
+            </Texture>
+          </Layer>
+        </Layers> -->
+
+        <Scripts>
+          <OnLoad>
+            VikingRaidNotes:BindViewToController(self, "VRNUI.ScrollFrame")
+          </OnLoad>
+          <OnShow>
+            <!-- print("SHOW ScrollFrame") -->
+          </OnShow>
+          <OnMouseWheel>
+            self:OnMouseWheel(delta)
+          </OnMouseWheel>
+        </Scripts>
+
+        <Frames>
+          <Slider name="$parent_VSlider" orientation="VERTICAL" minValue="0" maxValue="100" defaultValue="0" valueStep="1" parentKey="ScrollBar">
+            <Size x="4" />
+            <Anchors>
+              <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeKey="$parentScrollFrame">
+                <Offset>
+                  <AbsDimension x="-1" y="-1" />
+                </Offset>
+              </Anchor>
+              <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeKey="$parentScrollFrame">
+                <Offset>
+                  <AbsDimension x="-1" y="1" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+
+            <Scripts>
+              <OnValueChanged>
+                if (not self:GetParent().Content) then return end
+                local position = self:GetParent().Content:GetHeight() * (self:GetValue() / 100)
+                self:GetParent():SetVerticalScroll(position)
+              </OnValueChanged>
+
+            </Scripts>
+            <ThumbTexture name="$parentThumbTexture" file="Interface\AddOns\VikingSharedLib\assets\textures\solid">
+              <Size x="4" y="16"/>
+            </ThumbTexture>
+          </Slider>
+        </Frames>
+
+        <ScrollChild parentKey="ScrollChild">
+          <Frame parentKey="Content">
+            <Size x="128" y="600"/>
+            <!-- <Layers>
+              <Layer level="BACKGROUND">
+                <Texture setAllPoints="true">
+                  <Color r="1.0" g="0.0" b="0.0" a="0.25" />
+                </Texture>
+              </Layer>
+            </Layers> -->
+          </Frame>
+        </ScrollChild>
+
+      </ScrollFrame>
+    </Frames>
+  </Frame>
+</Ui>

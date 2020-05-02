@@ -1,0 +1,74 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+  <Script file="NotesWindow.lua" />
+
+  <Frame name="VRNNotesWindowTemplate" virtual="true" movable="true">
+    <Size x="256" y="26" />
+
+    <Anchors>
+      <Anchor point="CENTER" relativeTo="UIParent" />
+    </Anchors>
+
+    <Scripts>
+      <OnLoad>
+        VikingRaidNotes:BindViewToController(self, "VRNUI.NotesWindow")
+        self:RegisterForDrag("LeftButton")
+        self:SetClampedToScreen(true)
+      </OnLoad>
+
+      <OnDragStart>
+        if not self.isLocked then
+          self:StartMoving()
+        end
+      </OnDragStart>
+
+      <OnDragStop>
+        self:StopMovingOrSizing()
+      </OnDragStop>
+    </Scripts>
+
+    <Frames>
+      <Frame name="$parentTitleBar" parentKey="TitleBar">
+        <Size x="256" y="26" />
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="TOPLEFT" />
+          <Anchor point="TOPRIGHT" relativeKey="$parent" relativepoint="TOPRIGHT" />
+        </Anchors>
+
+        <Layers>
+          <Layer level="ARTWORK">
+            <Texture setAllPoints="true">
+              <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.8" />
+            </Texture>
+
+            <FontString name="$parentText" parentKey="Text" font="Interface\Addons\VikingSharedLib\assets\fonts\Montserrat-Regular.ttf" justifyV="CENTER" justifyH="LEFT">
+              <Anchors>
+                <Anchor point="LEFT" relativeKey="$parent" relativepoint="LEFT">
+                  <Offset>
+                    <AbsDimension x="6" y="0" />
+                  </Offset>
+                </Anchor>
+              </Anchors>
+
+              <Color r="1" g="1" b="1" />
+              <FontHeight val="12" />
+
+            </FontString>
+          </Layer>
+        </Layers>
+      </Frame>
+
+      <Button name="$parentCollapse" inherits="VRNCollapseButtonTemplate" />
+      <Button name="$parentExpand" inherits="VRNExpandButtonTemplate" />
+
+      <Frame name="$parentContent" parentKey="Content">
+        <Size x="256" y="6" />
+
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="BOTTOMLEFT" />
+          <Anchor point="TOPRIGHT" relativeKey="$parent" relativepoint="BOTTOMRIGHT" />
+        </Anchors>
+      </Frame>
+    </Frames>
+
+  </Frame>
+</Ui>

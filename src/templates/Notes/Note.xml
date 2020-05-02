@@ -1,0 +1,72 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+  <Script file="Note.lua" />
+
+  <Frame name="VRNNoteTemplate" virtual="true" parentKey="Note">
+    <Size x="128" y="64" />
+
+    <Scripts>
+      <OnLoad>
+        VikingRaidNotes:BindViewToController(self, "VRNUI.Note")
+        self.NoteText.Text:SetText("VRNNoteTemplate")
+      </OnLoad>
+    </Scripts>
+
+    <Frames>
+      <Frame inherits="VRNNoteTitleBar" parentKey="TitleBar" />
+
+      <Button name="$parentCollapse" inherits="VRNCollapseButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPRIGHT" x="-6" y="-3" />
+        </Anchors>
+      </Button>
+
+      <Button name="$parentExpand" inherits="VRNExpandButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPRIGHT" x="-6" y="-3" />
+        </Anchors>
+      </Button>
+
+      <Frame name="$parentNoteText" parentKey="NoteText">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="TOPLEFT">
+            <Offset>
+              <AbsDimension x="0" y="-18" />
+            </Offset>
+          </Anchor>
+          <Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativepoint="BOTTOMRIGHT" />
+        </Anchors>
+
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture setAllPoints="true">
+              <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.5" />
+            </Texture>
+          </Layer>
+
+          <Layer level="ARTWORK">
+            <FontString name="$parentText" parentKey="Text" font="Interface\Addons\VikingSharedLib\assets\fonts\Montserrat-Regular.ttf" justifyV="TOP" justifyH="LEFT">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="TOPLEFT">
+                  <Offset>
+                    <AbsDimension x="6" y="-6" />
+                  </Offset>
+                </Anchor>
+                <Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativepoint="BOTTOMRIGHT">
+                  <Offset>
+                    <AbsDimension x="-6" y="6" />
+                  </Offset>
+                </Anchor>
+              </Anchors>
+
+              <Color r="1" g="1" b="1" />
+
+              <FontHeight val="12" />
+
+            </FontString>
+          </Layer>
+        </Layers>
+      </Frame>
+    </Frames>
+
+  </Frame>
+</Ui>

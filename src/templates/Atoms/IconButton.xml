@@ -1,0 +1,31 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+  <Script file="IconButton.lua" />
+    <Button name="VRNIconButtonTemplate" text="MC" virtual="true">
+    <Size x="24" y="24" />
+
+    <!--
+      SET THE TEXTURE:
+        IconTexture: Path to a texture file
+        Sprite: Name of a sprite in VikingSharedLib
+
+    <KeyValues>
+			<KeyValue key="IconTexture" value="Interface\AddOns\WeakAuras\Media\Textures\Circle_White" />
+      <KeyValue key="Sprite" value="expand" />
+		</KeyValues> -->
+
+    <Scripts>
+      <OnLoad>
+        VikingRaidNotes:BindViewToController(self, "VRNUI.IconButton")
+      </OnLoad>
+      <OnClick>
+        if (self.OnClick) then self.OnClick(self, event, button, down) end
+      </OnClick>
+    </Scripts>
+
+    <Layers>
+      <Layer level="OVERLAY">
+        <Texture parentKey="IconTexture" setAllPoints="true" />
+      </Layer>
+    </Layers>
+  </Button>
+</Ui>

@@ -1,0 +1,62 @@
+<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+  <Script file="NoteTitleBar.lua" />
+
+  <Frame name="VRNNoteTitleBar" virtual="true">
+    <Size x="128" y="18" />
+
+    <Anchors>
+      <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="TOPLEFT" />
+      <Anchor point="TOPRIGHT" relativeKey="$parent" relativepoint="TOPRIGHT" />
+    </Anchors>
+
+    <Scripts>
+      <OnLoad>
+        VikingRaidNotes:BindViewToController(self, "VRNUI.NoteTitleBar")
+        self.Text:SetText("VRNNoteTitleBar")
+      </OnLoad>
+    </Scripts>
+
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture setAllPoints="true">
+          <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.8" />
+        </Texture>
+      </Layer>
+
+      <Layer level="ARTWORK">
+        <FontString name="$parentText" parentKey="Text" font="Interface\Addons\VikingSharedLib\assets\fonts\Montserrat-Regular.ttf" justifyV="TOP" justifyH="LEFT">
+          <Anchors>
+            <Anchor point="LEFT" relativeKey="$parent" relativepoint="LEFT">
+              <Offset>
+                <AbsDimension x="20" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+
+          <Color r="1" g="1" b="1" />
+          <FontHeight val="11" />
+        </FontString>
+      </Layer>
+    </Layers>
+
+    <Frames>
+      <Frame parentKey="ChannelIcon">
+        <Size x="10" y="10" />
+        <Anchors>
+          <Anchor point="LEFT" relativeKey="$parent" relativepoint="LEFT">
+            <Offset>
+              <AbsDimension x="6" y="0" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+
+        <Layers>
+          <Layer level="ARTWORK">
+            <Texture parentKey="Texture" setAllPoints="true" file="Interface\AddOns\VikingSharedLib\assets\textures\channel">
+            </Texture>
+          </Layer>
+        </Layers>
+      </Frame>
+    </Frames>
+  </Frame>
+</Ui>

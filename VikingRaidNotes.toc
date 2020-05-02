@@ -1,0 +1,10 @@
+## Interface: 11304
+## Title: VikingRaidNotes
+## Notes: Shared raid notes
+## Author: Vikinghug
+## Version: 0.0.1
+## Dependencies: VikingSharedLib, ViragDevTool
+## SavedVariablesPerCharacter: VikingRaidNotesDB
+## X-Category: Addon
+
+src\Core.xml
