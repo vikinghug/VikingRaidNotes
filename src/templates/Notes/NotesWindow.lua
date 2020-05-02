@@ -3,7 +3,7 @@ local addonName = ...
 
 local addon = _G[addonName]
 
-addon:Controller("VRNUI.NotesWindow", { "VRNUI.SetsService", function(SetsService)
+addon:Controller("VRNUI.NotesWindow", { "VRNUI.SettingsService", function(SettingsService)
   local pool = {}
 
   return {
@@ -21,14 +21,14 @@ addon:Controller("VRNUI.NotesWindow", { "VRNUI.SetsService", function(SetsServic
 
       frame.ExpandButton:Hide()
 
-      frame:SetNotes(SetsService.SelectedNote())
+      frame:SetNotes(SettingsService.SelectedNote())
     end,
 
     SetNotes = function(frame, buttonID)
       local parent = frame
 
       for i, note in ipairs(pool) do
-        local noteData = SetsService.GetNoteForChannel(buttonID, note.channelID)
+        local noteData = SettingsService.GetNoteForChannel(buttonID, note.channelID)
         if (noteData ~= nil and noteData.value ~= nil and noteData.value ~= "") then
           note:SetPoint("TOPLEFT", parent, "BOTTOMLEFT", 0, -3)
           note:SetPoint("TOPRIGHT", parent, "BOTTOMRIGHT", 0, -3)
@@ -39,8 +39,8 @@ addon:Controller("VRNUI.NotesWindow", { "VRNUI.SetsService", function(SetsServic
           note:Hide()
         end
 
-        local buttonData = SetsService.GetButton(buttonID)
-        local setData = SetsService.GetSet(buttonData.setID)
+        local buttonData = SettingsService.GetButton(buttonID)
+        local setData = SettingsService.GetSet(buttonData.setID)
 
         frame.TitleBar.Text:SetText(setData.short .. " - " .. buttonData.name)
       end

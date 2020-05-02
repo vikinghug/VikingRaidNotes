@@ -1,6 +1,7 @@
 <Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
   <Script file="Core.lua" />
   <Include file="services\Services.xml" />
+  <Script file="Comm.lua" />
   <Script file="Settings.lua" />
   <Script file="Events.lua" />
 	<Include file="templates\Templates.xml" />

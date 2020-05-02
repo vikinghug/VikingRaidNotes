@@ -3,7 +3,7 @@ local addonName = ...
 
 local addon = _G[addonName]
 
-addon:Controller("VRNUI.SetButton", { "VRNUI.SetsService", function(SetsService)
+addon:Controller("VRNUI.SetButton", { "VRNUI.SettingsService", function(SettingsService)
   return {
     OnBind = function(frame)
     end,
@@ -13,7 +13,7 @@ addon:Controller("VRNUI.SetButton", { "VRNUI.SetsService", function(SetsService)
     end,
 
     Update = function(frame, id)
-      local set = SetsService.GetSet(id)
+      local set = SettingsService.GetSet(id)
       frame:SetLabel(set.name)
     end
   }

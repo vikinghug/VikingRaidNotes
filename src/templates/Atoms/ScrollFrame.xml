@@ -21,9 +21,6 @@
           <OnLoad>
             VikingRaidNotes:BindViewToController(self, "VRNUI.ScrollFrame")
           </OnLoad>
-          <OnShow>
-            <!-- print("SHOW ScrollFrame") -->
-          </OnShow>
           <OnMouseWheel>
             self:OnMouseWheel(delta)
           </OnMouseWheel>

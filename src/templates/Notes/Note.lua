@@ -3,7 +3,7 @@ local addonName = ...
 
 local addon = _G[addonName]
 
-addon:Controller("VRNUI.Note", { "VRNUI.SetsService", "VRNUI.FormatterService", function(SetsService, FormatterService)
+addon:Controller("VRNUI.Note", { "VRNUI.SettingsService", "VRNUI.FormatterService", function(SettingsService, FormatterService)
   local TITLE_BAR_HEIGHT = 18
   local TEXT_PADDING = 6
   return {
@@ -22,7 +22,7 @@ addon:Controller("VRNUI.Note", { "VRNUI.SetsService", "VRNUI.FormatterService", 
         frame.NoteText.Text:SetText(FormatterService.ParseText(noteData.value))
 
         local width, height = frame:GetNoteSize()
-        if (not SetsService.GetChannel(frame.channelID).collapsed) then
+        if (not SettingsService.GetChannel(frame.channelID).collapsed) then
           frame:SetSize(width, height)
         end
 
@@ -38,13 +38,13 @@ addon:Controller("VRNUI.Note", { "VRNUI.SetsService", "VRNUI.FormatterService", 
     end,
 
     Collapse = function(frame)
-      SetsService.CollapseChannel(frame.channelID)
+      SettingsService.CollapseChannel(frame.channelID)
       frame:SetHeight(TITLE_BAR_HEIGHT)
       frame.NoteText:Hide()
     end,
 
     Expand = function(frame)
-      SetsService.ExpandChannel(frame.channelID)
+      SettingsService.ExpandChannel(frame.channelID)
       local _, height = frame:GetNoteSize()
       frame:SetHeight(height)
       frame.NoteText:Show()

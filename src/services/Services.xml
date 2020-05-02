@@ -1,5 +1,6 @@
 <Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
   <Script file="Formatter.lua" />
   <Script file="Players.lua" />
-  <Script file="Sets.lua" />
+  <Script file="Settings.lua" />
+  <Script file="Comm.lua" />
 </Ui>

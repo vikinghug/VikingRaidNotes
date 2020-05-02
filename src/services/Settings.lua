@@ -13,7 +13,7 @@ local function filter(tbl, func)
   return newtbl
 end
 
-addon:Service("VRNUI.SetsService", function()
+addon:Service("VRNUI.SettingsService", function()
   return {
 
     Sets = function()
@@ -66,6 +66,32 @@ addon:Service("VRNUI.SetsService", function()
           order = #addon.db.profile.notes,
           value = value
         })
+      end
+    end,
+
+    UpsertNote = function(self, note)
+      local timestamp = time()
+
+      local found = false
+      for i, v in ipairs(addon.db.profile.notes) do
+        if (v.channelID == note.channelID and v.buttonID == note.buttonID) then
+          found = true
+          addon.db.profile.notes[i].value = note.value
+          addon.db.profile.notes[i].updatedAt = timestamp
+        end
+      end
+
+      if (not found) then
+        note.updatedAt = timestamp
+        table.insert(addon.db.profile.notes, note)
+      end
+
+      addon.Options:UpdateSetsOptions()
+    end,
+
+    UpsertNotes = function(self, notes)
+      for i, v in ipairs(notes) do
+        self:UpsertNote(v)
       end
     end,
 
@@ -143,24 +169,6 @@ addon:Service("VRNUI.SetsService", function()
           v.collapsed = false
         end
       end
-    end,
-
-    PushNotesForButton = function(self, buttonID)
-      print(buttonID)
-      for _, note in ipairs(self.GetNotesForButton(buttonID)) do
-        local data = "note:" .. note.id .. ":" .. note.setID .. ":" .. note.buttonID .. ":" .. note.value
-        C_ChatInfo.SendAddonMessage("VRN_NOTES_PUSH", data, "RAID")
-      end
-
-      -- set:id:title:value
-      -- for _,v in ipairs(addon.Settings.db.profile.macroButtons) do
-      --   local n = 1
-      --   for i=1,#v.value,200 do
-      --     local data = "btn:" .. v.set .. ":" .. v.id .. "." .. n .. ":" .. v.title .. ":" .. string.sub(v.value, i, i+200)
-      --     C_ChatInfo.SendAddonMessage("VRT_NOTES_PUSH", data, "GUILD")
-      --     n = n+1
-      --   end
-      -- end
     end
   }
 end)

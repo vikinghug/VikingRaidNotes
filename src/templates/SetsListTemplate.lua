@@ -3,7 +3,7 @@ local addonName = ...
 
 local addon = _G[addonName]
 
-addon:Controller("VRNUI.SetsList", { "VRNUI.SetsService", function(SetsService)
+addon:Controller("VRNUI.SetsList", { "VRNUI.SettingsService", function(SettingsService)
   local pool = {}
 
   local function clearPool()
@@ -18,7 +18,7 @@ addon:Controller("VRNUI.SetsList", { "VRNUI.SetsService", function(SetsService)
 
       local setParent = frame
 
-      local sets = SetsService:Sets()
+      local sets = SettingsService:Sets()
       for i,v in ipairs(sets) do
         local set
         if pool[i] then
@@ -33,14 +33,14 @@ addon:Controller("VRNUI.SetsList", { "VRNUI.SetsService", function(SetsService)
         setParent = set
 
         set.Text:SetText(v.name)
-        if (v.id == SetsService:SelectedSet()) then
+        if (v.id == SettingsService:SelectedSet()) then
           set.Text:SetTextColor(VSL.Colors.YELLOW:ToList())
         else
           set.Text:SetTextColor(1,1,1,1)
         end
 
         set:SetScript("OnClick", function(this)
-          SetsService.SelectSet(v.id)
+          SettingsService.SelectSet(v.id)
           frame:Update()
           frame:GetParent().Buttons:Update()
         end)
@@ -52,7 +52,7 @@ addon:Controller("VRNUI.SetsList", { "VRNUI.SetsService", function(SetsService)
 
     Update = function(frame)
       for i, set in ipairs(pool) do
-        if (set.id == SetsService:SelectedSet()) then
+        if (set.id == SettingsService:SelectedSet()) then
           set.Text:SetTextColor(VSL.Colors.YELLOW:ToList())
         else
           set.Text:SetTextColor(1,1,1,1)
@@ -65,7 +65,7 @@ addon:Controller("VRNUI.SetsList", { "VRNUI.SetsService", function(SetsService)
   }
 end})
 
-addon:Controller("VRNUI.NotesList", { "VRNUI.SetsService", function(SetsService)
+addon:Controller("VRNUI.NotesList", { "VRNUI.SettingsService", function(SettingsService)
   local pool = {}
 
   local function clearPool()
@@ -83,7 +83,7 @@ addon:Controller("VRNUI.NotesList", { "VRNUI.SetsService", function(SetsService)
       frame:SetPoint("BOTTOMRIGHT", frame:GetParent())
 
       local parent = frame
-      local notes = SetsService:SelectedSetButtons()
+      local notes = SettingsService:SelectedSetButtons()
       for i,v in ipairs(notes) do
         local note
         if pool[i] then
@@ -98,14 +98,14 @@ addon:Controller("VRNUI.NotesList", { "VRNUI.SetsService", function(SetsService)
         parent = note
 
         note.Text:SetText(v.name)
-        if (note.id == SetsService:SelectedNote()) then
+        if (note.id == SettingsService:SelectedNote()) then
           note.Text:SetTextColor(VSL.Colors.YELLOW:ToList())
         else
           note.Text:SetTextColor(1,1,1,1)
         end
 
         note:SetScript("OnClick", function(this)
-          SetsService.SelectNote(note.id)
+          SettingsService.SelectNote(note.id)
           addon.Frame:SetNotes(note.id)
           frame:Update()
         end)

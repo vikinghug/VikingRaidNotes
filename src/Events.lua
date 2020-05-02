@@ -3,7 +3,7 @@ local addonName = ...
 
 local addon = _G[addonName]
 
-addon:Controller("VRNUI.Events", { "VRNUI.PlayersService", "VRNUI.SetsService", function(PlayersService, SetsService)
+addon:Controller("VRNUI.Events", { "VRNUI.PlayersService", "VRNUI.SettingsService", function(PlayersService, SettingsService)
   return {
     OnBind = function(frame)
       -- C_ChatInfo.RegisterAddonMessagePrefix("VRN_NOTES_SET")
@@ -25,29 +25,15 @@ addon:Controller("VRNUI.Events", { "VRNUI.PlayersService", "VRNUI.SetsService", 
     end,
 
     PLAYER_ENTERING_WORLD = function(frame)
-      VSL:Debug("PLAYER_ENTERING_WORLD")
-      addon.Options:OnLoad(SetsService)
       PlayersService.UpdatePlayersFromGuild()
     end,
 
     GROUP_ROSTER_UPDATE = function(frame)
-      VSL:Debug("GROUP_ROSTER_UPDATE")
       PlayersService.UpdatePlayersFromRaid()
     end,
 
     GUILD_ROSTER_UPDATE = function(frame)
-      VSL:Debug("GUILD_ROSTER_UPDATE")
       PlayersService.UpdatePlayersFromGuild()
     end,
-
-    -- CHAT_MSG_ADDON = function(frame, prefix, text, channel, sender, target, zoneChannelID, localID, name, instanceID)
-    --   if (prefix == "VRN_NOTES_PUSH") then
-    --     VSL:Debug("CHAT_MSG_ADDON", {prefix, text, channel, sender, target, zoneChannelID, localID, name, instanceID})
-    --     local type, noteID, setID, buttonID, value = text:match("(%w+):(%d+):(%d+):(%d+):(.+)")
-
-    --     print(type, noteID, setID, buttonID, value)
-    --   end
-    --   -- PlayersService.UpdatePlayersFromGuild()
-    -- end,
   }
 end})
