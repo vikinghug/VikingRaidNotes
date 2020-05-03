@@ -1,0 +1,13 @@
+package-as: VikingRaidNotes
+enable-nolib-creation: no
+
+externals:
+  libs/VikingSharedLib:
+    url: https://github.com/vikinghug/VikingSharedLib
+    tag: latest
+
+move-folders:
+  VikingSpy/libs/VikingSharedLib: VikingSharedLib
+
+required-dependencies:
+  - vikingsharedlib

@@ -8,8 +8,8 @@ addon:Controller("VRNUI.Events", { "VRNUI.PlayersService", "VRNUI.SettingsServic
     OnBind = function(frame)
       -- C_ChatInfo.RegisterAddonMessagePrefix("VRN_NOTES_SET")
       -- C_ChatInfo.RegisterAddonMessagePrefix("VRN_NOTES_PUSH")
-      PlayersService.UpdatePlayersFromGuild()
-      PlayersService.UpdatePlayersFromRaid()
+      PlayersService:UpdatePlayersFromGuild()
+      PlayersService:UpdatePlayersFromRaid()
       frame:RegisterEvents()
     end,
 
@@ -25,15 +25,15 @@ addon:Controller("VRNUI.Events", { "VRNUI.PlayersService", "VRNUI.SettingsServic
     end,
 
     PLAYER_ENTERING_WORLD = function(frame)
-      PlayersService.UpdatePlayersFromGuild()
+      PlayersService:UpdatePlayersFromGuild()
     end,
 
     GROUP_ROSTER_UPDATE = function(frame)
-      PlayersService.UpdatePlayersFromRaid()
+      PlayersService:UpdatePlayersFromRaid()
     end,
 
     GUILD_ROSTER_UPDATE = function(frame)
-      PlayersService.UpdatePlayersFromGuild()
+      PlayersService:UpdatePlayersFromGuild()
     end,
   }
 end})

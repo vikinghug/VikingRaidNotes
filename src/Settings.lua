@@ -6,6 +6,7 @@
 
 local VSL = LibStub("VikingSharedLib")
 local AceDB = LibStub("AceDB-3.0")
+local AceGUI = LibStub("AceGUI-3.0")
 
 local addonName = ...
 local addon = _G[addonName]
@@ -231,7 +232,7 @@ Options.options2 = {
   name = "Options 2",
   type = 'group',
   childGroups = "tab",
-  args = {}
+  args = { }
 }
 
 function Options:UpdateSetsOptions()
@@ -329,6 +330,141 @@ function Options:UpdateSetsOptions()
   AceConfigRegistry:NotifyChange(addonName .. ".options2")
 end
 
+-- Options.players = {
+--   name = "Players",
+--   type = 'group',
+--   args = {
+--     hr =  {
+--       type = "header",
+--       name = "",
+--       order = 1
+--     }
+--   }
+-- }
+
+-- local function strToNum(str)
+--   local val = 0
+--   for i = 1, #str do
+--       val = val + str:upper():byte(i, i+1)
+--   end
+--   return val
+-- end
+
+-- function Options:UpdatePlayersOptions()
+--   for i, player in ipairs(getSortedPlayers()) do
+--     print(player)
+--     Options.players.args[player.name] = {
+--       type = "description",
+--       width = 1,
+--       order = i,
+--       name = "|c" .. player.textColor .. player.name .. "|r",
+--     }
+--     Options.players.args[player.name .. "_version"] = {
+--       type = "description",
+--       width = 1,
+--       order = i + 0.1,
+--       name = "|c" .. player.textColor .. "xxx" .. "|r",
+--     }
+--   end
+
+--   AceConfigRegistry:NotifyChange(addonName .. ".players")
+-- end
+
+local function getSortedPlayers()
+  local players = addon.Services.PlayersService.GetRaidPlayers()
+
+  table.sort(players, function(a, b) return a.name:upper() < b.name:upper() end)
+  return players
+end
+
+local function PlayerList(frame)
+  local scrollContainer = AceGUI:Create("SimpleGroup")
+  scrollContainer:SetFullWidth(true)
+  scrollContainer:SetHeight(250)
+  scrollContainer:SetLayout("Fill")
+
+  local scroll = AceGUI:Create("ScrollFrame")
+  scroll:SetLayout("List")
+  scrollContainer:AddChild(scroll)
+
+  local playerVersions = {}
+
+  for i, player in ipairs(getSortedPlayers()) do
+    local playerContainer = AceGUI:Create("SimpleGroup")
+    local label = AceGUI:Create("Label")
+    local version = AceGUI:Create("Label")
+
+    label:SetText("|c" .. player.textColor .. player.name .. "|r")
+    label:SetRelativeWidth(0.65)
+
+    version:SetText(
+      addon.Services.PlayersService:GetVersionTextColor(player.name) ..
+      player.version
+    )
+    version:SetJustifyH("Right")
+    version:SetRelativeWidth(0.35)
+
+    playerContainer:SetFullWidth(true)
+    playerContainer:SetLayout("Flow")
+    playerContainer:AddChild(label)
+    playerContainer:AddChild(version)
+
+    scroll:AddChild(playerContainer)
+
+    playerVersions[player.name] = version
+  end
+
+  VRNPLAYERS = playerVersions
+
+  frame:AddChild(scrollContainer)
+  return playerVersions
+end
+
+local function PlayersVersionWindow()
+  local frame = AceGUI:Create("Window")
+  frame:SetTitle("Players")
+  frame:SetStatusText("AceGUI-3.0 Example Container Frame")
+  frame:SetCallback("OnClose", function(widget)
+    AceGUI:Release(widget)
+    Options.playersFrameShown = false
+  end)
+  frame:SetLayout("Flow")
+  frame:SetWidth(300)
+  frame:SetHeight(400)
+
+  local header = AceGUI:Create("SimpleGroup")
+  local contents = AceGUI:Create("InlineGroup")
+  contents:SetLayout("Fill")
+  contents:SetFullWidth(true)
+  contents:SetFullHeight(true)
+
+  local playerVersions = PlayerList(contents)
+
+  local syncButton = AceGUI:Create("Button")
+  syncButton:SetFullWidth(true)
+  syncButton:SetText("Scan for Versions")
+  syncButton:SetCallback("OnClick", function(widget)
+    for k, v in pairs(playerVersions) do
+      v:SetText(VSL.Colors.DARK_GREY:ToText() .. "...")
+    end
+
+    addon.Services.CommService:CheckVersions(playerVersions, function(player)
+      C_Timer.After(2, function()
+        playerVersions[player]:SetText(
+          addon.Services.PlayersService:GetVersionTextColor(player) ..
+          addon.Services.PlayersService:GetVersionText(player)
+        )
+      end)
+    end)
+  end)
+  header:AddChild(syncButton)
+
+  frame:AddChild(header)
+  frame:AddChild(contents)
+  Options.playersFrameShown = true
+end
+
+
 function Options:OnLoad()
   AceConfig:RegisterOptionsTable(addonName, addon.Options.options1, { "vikingraidnotes", "vrn" })
   AceConfigDialog:AddToBlizOptions(addonName, addonName)
@@ -345,59 +481,13 @@ function Options:OnLoad()
     AceConfigDialog:Open("VikingRaidNotes.options2")
   end)
 
-  --@debug@
-  -- AceConfig:RegisterOptionsTable(addonName .. ".model", modelOptions, {"model"})
-  --@end-debug@
-end
-
--- function Options:OpenModelOptions()
---   if not AceConfigDialog.OpenFrames[addonName .. ".model"] then
---     AceConfigDialog:Open(addonName .. ".model")
---   end
--- end
-
-
-
-
-
-
---[[
-addon:Service("VRNUI.PoolService", function()
-  local pools = {}
-
-  return {
-    Clear = function(self, parent)
-      local name = parent:GetName()
-      local pool = pools[name] or {}
-
-      for i, item in ipairs(pool) do
-        item:Hide()
-        item.active = false
-      end
-
-      pools[name] = pool
-    end,
-    Add = function(self, parent, options)
-      local name = parent:GetName()
-      local pool = pools[name] or {}
-
-      local found = false
-      for i, item in ipairs(pool) do
-        if (item.active == false) then
-          found = i
-          break
-        end
-      end
-
-      if (found) then
-        pool[found]:Update(options)
-      else
-        table.insert(pool, {})
-      end
-
-      pools[name] = pool
+  -- TODO: Put this back in.. only removed for simplicity sake right now
+  -- Options:UpdatePlayersOptions()
+  -- AceConfig:RegisterOptionsTable(addonName .. ".players", Options.players)
+  -- AceConfigDialog:AddToBlizOptions(addonName .. ".players", "Players", addonName)
+  AceConsole:RegisterChatCommand("vrnp", function()
+    if (not Options.playersFrameShown) then
+      PlayersVersionWindow()
     end
-  }
-end)
-]]
-
+  end)
+end

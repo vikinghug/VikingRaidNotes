@@ -13,11 +13,15 @@ function addon:OnInitialize()
   addon:Controller("VRNUI.ServicesController", {
     "VRNUI.SettingsService",
     "VRNUI.CommService",
-    function(SettingsService, CommService)
+    "VRNUI.PlayersService",
+    function(SettingsService, CommService, PlayersService)
       return {
         OnBind = function(frame)
           frame.SettingsService = SettingsService
           frame.CommService = CommService
+          frame.PlayersService = PlayersService
+
+          CommService:Register()
         end
       }
     end
@@ -33,6 +37,4 @@ function addon:OnInitialize()
   addon:BindViewToController(self.Events, "VRNUI.Events")
 
   self.Sets = CreateFrame("Frame", "VRNSetsList", UIParent, "VRNSetsListTemplate")
-
-  self.Comm:Register()
 end
