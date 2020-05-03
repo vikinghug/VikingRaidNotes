@@ -35,7 +35,6 @@ addon:Service("VRNUI.CommService", {
       VERSION_PULL = function(self, text, channel, sender)
         local playerName = UnitName("player")
         if (sender == playerName) then return end
-        print('VERSION_PULL', text, channel, sender)
 
         self:SendVersionTo(sender)
       end,
@@ -43,7 +42,6 @@ addon:Service("VRNUI.CommService", {
       VERSION_PUSH = function(self, text, channel, sender, ...)
         local playerName = UnitName("player")
         if (sender == playerName) then return end
-        print('VERSION_PUSH', text, channel, sender, ...)
 
         PlayersService:SetPlayerVersion(sender, text)
       end,
