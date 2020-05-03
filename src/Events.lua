@@ -6,8 +6,6 @@ local addon = _G[addonName]
 addon:Controller("VRNUI.Events", { "VRNUI.PlayersService", "VRNUI.SettingsService", function(PlayersService, SettingsService)
   return {
     OnBind = function(frame)
-      -- C_ChatInfo.RegisterAddonMessagePrefix("VRN_NOTES_SET")
-      -- C_ChatInfo.RegisterAddonMessagePrefix("VRN_NOTES_PUSH")
       PlayersService:UpdatePlayersFromGuild()
       PlayersService:UpdatePlayersFromRaid()
       frame:RegisterEvents()
@@ -17,7 +15,6 @@ addon:Controller("VRNUI.Events", { "VRNUI.PlayersService", "VRNUI.SettingsServic
       frame:RegisterEvent("GROUP_ROSTER_UPDATE")
       frame:RegisterEvent("GUILD_ROSTER_UPDATE")
       frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-      -- frame:RegisterEvent("CHAT_MSG_ADDON")
 
       frame:SetScript("OnEvent", function(this, event, ...)
         frame[event](this, ...)

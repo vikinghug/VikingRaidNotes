@@ -89,7 +89,8 @@ addon:Service("VRNUI.FormatterService", function()
         end)
         :gsub("[^%s]+", function(s)
           if not addon.db.profile.players[s] then return s end
-          return s:gsub(s, "|c" .. addon.db.profile.players[s].textColor .. s .. "|r")
+          local color = addon.db.profile.players[s].textColor or "ffffffff"
+          return s:gsub(s, "|c" .. color .. s .. "|r")
         end)
 
       return text

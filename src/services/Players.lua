@@ -25,7 +25,7 @@ addon:Service("VRNUI.PlayersService", function()
         local nameAndServer, rankName, rankIndex, level, classDisplayName, zone, publicNote, officerNote, isOnline, status, class, achievementPoints, achievementRank, isMobile, canSoR, repStanding, GUID = GetGuildRosterInfo(i)
         local name = nameAndServer:gsub("(%w+)-%w+", "%1")
 
-        self:AddPlayer(name, class)
+        self:AddPlayer(name, classDisplayName)
       end
     end,
 
