@@ -235,6 +235,47 @@ Options.options2 = {
   args = { }
 }
 
+local description =
+"{blue}" .. VSL.Colors.BLUE:ToText() .. "blue text|r{/blue}\n" ..
+"{green}" .. VSL.Colors.GREEN:ToText() .. "green text|r{/green}\n" ..
+"{red}" .. VSL.Colors.RED:ToText() .. "red text|r{/red}\n" ..
+"{yellow}" .. VSL.Colors.YELLOW:ToText() .. "yellow text|r{/yellow}\n" ..
+"{orange}" .. VSL.Colors.ORANGE:ToText() .. "orange text|r{/orange}\n" ..
+"{pink}" .. VSL.Colors.PINK:ToText() .. "pink text|r{/pink}\n" ..
+"{purple}" .. VSL.Colors.PURPLE:ToText() .. "purple text|r{/purple}\n" ..
+"{brown}" .. VSL.Colors.BROWN:ToText() .. "brown text|r{/brown}\n" ..
+"{cdruid}" .. VSL.Colors.ORANGE:ToText() .. "orange text|r{/cdruid}\n" ..
+"{chunter}" .. VSL.Colors.GREEN:ToText() .. "green text|r{/chunter}\n" ..
+"{cmage}" .. VSL.Colors.BLUE:ToText() .. "blue text|r{/cmage}\n" ..
+"{cpaladin}" .. VSL.Colors.PINK:ToText() .. "pink text|r{/cpaladin}\n" ..
+"{cpriest}" .. VSL.Colors.WHITE:ToText() .. "white text|r{/cpriest}\n" ..
+"{crogue}" .. VSL.Colors.YELLOW:ToText() .. "yellow text|r{/crogue}\n" ..
+"{cshaman}" .. VSL.Colors.DARK_BLUE:ToText() .. "blue text|r{/cshaman}|r\n" ..
+"{cwarlock}" .. VSL.Colors.PURPLE:ToText() .. "purple text|r{/cwarlock}\n" ..
+"{cwarrior}" .. VSL.Colors.LIGHT_BROWN:ToText() .. "brown text|r{/cwarrior}\n" ..
+[[{skull} = |TInterface\TargetingFrame\UI-RaidTargetingIcon_8:0|t
+{x} = |TInterface\TargetingFrame\UI-RaidTargetingIcon_7:0|t
+{square} = |TInterface\TargetingFrame\UI-RaidTargetingIcon_6:0|t
+{moon} = |TInterface\TargetingFrame\UI-RaidTargetingIcon_5:0|t
+{triangle} = |TInterface\TargetingFrame\UI-RaidTargetingIcon_4:0|t
+{diamond} = |TInterface\TargetingFrame\UI-RaidTargetingIcon_3:0|t
+{circle} = |TInterface\TargetingFrame\UI-RaidTargetingIcon_2:0|t
+{star} = |TInterface\TargetingFrame\UI-RaidTargetingIcon_1:0|t
+{hs} = |TInterface\Icons\INV_Stone_04:0:0:0:0|t
+{bl} = |TInterface\Icons\SPELL_Nature_Bloodlust:0:0:0:0|t
+{tank} = |TInterface\LFGFrame\UI-LFG-ICON-PORTRAITROLES:0:0:0:0:64:64:0:19:22:41|t
+{healer} = |TInterface\LFGFrame\UI-LFG-ICON-PORTRAITROLES:0:0:0:0:64:64:20:39:1:20|t
+{dps} = |TInterface\LFGFrame\UI-LFG-ICON-PORTRAITROLES:0:0:0:0:64:64:20:39:22:41|t
+{druid} = |TInterface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES:0:0:0:0:64:64:48:64:0:16|t
+{hunter} = |TInterface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES:0:0:0:0:64:64:0:16:16:32|t
+{mage} = |TInterface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES:0:0:0:0:64:64:16:32:0:16|t
+{paladin} = |TInterface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES:0:0:0:0:64:64:0:16:32:48|t
+{priest} = |TInterface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES:0:0:0:0:64:64:32:48:16:32|t
+{rogue} = |TInterface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES:0:0:0:0:64:64:32:48:0:16|t
+{shaman} = |TInterface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES:0:0:0:0:64:64:16:32:16:32|t
+{warlock} = |TInterface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES:0:0:0:0:64:64:48:64:16:32|t
+{warrior} = |TInterface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES:0:0:0:0:64:64:0:16:0:16|t]]
+
 function Options:UpdateSetsOptions()
   local sets = addon.Services.SettingsService.Sets()
 
@@ -271,6 +312,7 @@ function Options:UpdateSetsOptions()
 
         channels[channel.name .. "_note"] = {
           name = "Note Value",
+          desc = description,
           order = channel.order + 0.2,
           type = "input",
           width = "full",
@@ -303,8 +345,9 @@ function Options:UpdateSetsOptions()
 
       channels.push = {
         type = "execute",
-        name = "Push " .. btn.name,
+        name = "Push '" .. btn.name .. "' to Raid Members",
         order = 0,
+        width = "full",
         func = function()
           addon.Services.CommService:PushNotesForButton(btn.id)
         end
