@@ -39,6 +39,28 @@ addon:Controller("VRNUI.NotesWindow", { "VRNUI.SettingsService", function(Settin
       frame.ExpandButton:Hide()
 
       frame:SetNotes(addon.db.profile, SettingsService.SelectedNote())
+
+
+      frame:SetClampedToScreen(true)
+
+      -- frame.TitleBar:SetClampedToScreen(true)
+      frame.TitleBar:RegisterForDrag("LeftButton")
+
+      frame.TitleBar:SetScript("OnDragStart", function()
+        frame:StartMoving()
+      end)
+
+      frame.TitleBar:SetScript("OnDragStop", function()
+        frame:StopMovingOrSizing()
+      end)
+
+      frame.TitleBar:SetScript("OnEnter", function()
+        frame.ControlButtons:Open()
+      end)
+
+      frame.TitleBar:SetScript("OnLeave", function()
+        frame.ControlButtons:Close()
+      end)
     end,
 
     SetNotes = function(frame, data, buttonID)

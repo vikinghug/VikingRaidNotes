@@ -1,83 +1,82 @@
 <Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
   <Script file="SetsListTemplate.lua" />
 
-  <Frame name="VRNSetsListTemplate" movable="true" virtual="true">
-    <Size x="256" y="24" />
+  <Frame name="VRNSetsListTemplate" parentKey="SetsList" virtual="true">
+    <Size x="5" y="5" />
 
     <Anchors>
-      <Anchor point="CENTER" relativeTo="UIParent" />
+      <Anchor point="TOPRIGHT" relativeKey="$parent" relativePoint="TOPLEFT" />
     </Anchors>
 
     <Scripts>
       <OnLoad>
-        self:RegisterForDrag("LeftButton")
+        VikingRaidNotes:BindViewToController(self, "VRNUI.ControlButtons")
       </OnLoad>
-
-      <OnDragStart>
-        if not self.isLocked then
-          self:StartMoving()
-        end
-      </OnDragStart>
-
-      <OnDragStop>
-        self:StopMovingOrSizing()
-      </OnDragStop>
     </Scripts>
 
-    <Layers>
-      <Layer level="BACKGROUND">
-        <Texture setAllPoints="true">
-        <!-- 0.117647059 -->
-          <Color r="1" g="0.0431372549" b="0.149019608" a="0.2" />
-        </Texture>
-      </Layer>
-    </Layers>
-
     <Frames>
-      <!-- <Frame name="$parentScrollContainer" inherits="VRNScrollFrameTemplate" parentKey="ScrollContainer"> -->
-      <Frame name="$parentButtons" parentKey="Buttons">
-        <Size x="128" y="3" />
+
+      <Frame name="$parentButtons" parentKey="Buttons" inherits="VRNSetsListContentTemplate">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativeKey="$parent" relativePoint="TOPRIGHT" x="0" y="0" />
+        </Anchors>
 
         <Scripts>
           <OnLoad>
-            self:RegisterForDrag("LeftButton")
             VikingRaidNotes:BindViewToController(self, "VRNUI.NotesList")
           </OnLoad>
         </Scripts>
+
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture setAllPoints="true">
+              <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.75" />
+            </Texture>
+          </Layer>
+        </Layers>
       </Frame>
 
-      <Frame name="$parentSets" parentKey="Sets">
-        <Size x="128" y="3" />
+      <Frame name="$parentSets" parentKey="Sets" inherits="VRNSetsListContentTemplate">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativeKey="$parent.Buttons" relativePoint="TOPLEFT" x="0" y="0" />
+        </Anchors>
 
         <Scripts>
           <OnLoad>
-            self:RegisterForDrag("LeftButton")
             VikingRaidNotes:BindViewToController(self, "VRNUI.SetsList")
           </OnLoad>
         </Scripts>
+
+        <Layers>
+          <Layer level="ARTWORK">
+            <Texture setAllPoints="true">
+              <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.5" />
+            </Texture>
+          </Layer>
+        </Layers>
       </Frame>
 
     </Frames>
 
   </Frame>
 
-  <Button name="VRNListButtonTemplate" virtual="true">
-    <Size x="128" y="18" />
-    <Layers>
-      <Layer level="BACKGROUND">
-        <Texture setAllPoints="true">
-          <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.8" />
-        </Texture>
-      </Layer>
+  <Frame name="VRNSetsListContentTemplate" virtual="true">
+    <Size x="128" y="3" />
+  </Frame>
 
+  <Button name="VRNListButtonTemplate" virtual="true">
+    <Size x="128" y="20" />
+
+    <Anchors>
+      <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="0" />
+      <Anchor point="TOPRIGHT" relativeKey="$parent" relativePoint="TOPRIGHT" x="0" y="0" />
+    </Anchors>
+
+    <Layers>
       <Layer level="OVERLAY">
         <FontString name="$parentText" parentKey="Text" font="Interface\Addons\VikingSharedLib\assets\fonts\Montserrat-Regular.ttf" justifyV="TOP" justifyH="LEFT">
           <Anchors>
-            <Anchor point="LEFT" relativeKey="$parent" relativepoint="LEFT">
-              <Offset>
-                <AbsDimension x="6" y="0" />
-              </Offset>
-            </Anchor>
+            <Anchor point="LEFT" relativeKey="$parent" relativepoint="LEFT" x="10" y="0" />
           </Anchors>
 
           <Color r="1" g="1" b="1" />

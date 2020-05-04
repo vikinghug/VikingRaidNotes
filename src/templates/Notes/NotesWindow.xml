@@ -11,19 +11,7 @@
     <Scripts>
       <OnLoad>
         VikingRaidNotes:BindViewToController(self, "VRNUI.NotesWindow")
-        self:RegisterForDrag("LeftButton")
-        self:SetClampedToScreen(true)
       </OnLoad>
-
-      <OnDragStart>
-        if not self.isLocked then
-          self:StartMoving()
-        end
-      </OnDragStart>
-
-      <OnDragStop>
-        self:StopMovingOrSizing()
-      </OnDragStop>
     </Scripts>
 
     <Frames>
@@ -66,6 +54,13 @@
         <Anchors>
           <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="BOTTOMLEFT" />
           <Anchor point="TOPRIGHT" relativeKey="$parent" relativepoint="BOTTOMRIGHT" />
+        </Anchors>
+      </Frame>
+
+      <Frame name="$parentControlButtons" parentKey="ControlButtons" inherits="VRNSetsListTemplate">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativeKey="$parent" relativepoint="TOPLEFT" />
+          <!-- <Anchor point="TOPRIGHT" relativeKey="$parent" relativepoint="BOTTOMRIGHT" /> -->
         </Anchors>
       </Frame>
     </Frames>

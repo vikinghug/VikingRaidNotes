@@ -2,8 +2,8 @@
 ## Title: VikingRaidNotes
 ## Notes: Shared raid notes
 ## Author: Vikinghug
-## Version: 0.0.1
-## Dependencies: VikingSharedLib, ViragDevTool
+## Version: 0.0.2
+## Dependencies: VikingSharedLib
 ## SavedVariablesPerCharacter: VikingRaidNotesDB
 ## X-Category: Addon
 

@@ -4,7 +4,7 @@ local addonName = ...
 _G[addonName] = LibStub("AceAddon-3.0"):NewAddon(addonName, "LibMVC-1.0")
 
 local addon = _G[addonName]
-addon.Version = "0.0.1"
+addon.Version = "0.0.2"
 VRN = addon
 
 local Services = {}; addon.Services = Services;
@@ -36,5 +36,5 @@ function addon:OnInitialize()
   self.Events = CreateFrame("Frame", "VRNEvents", UIParent)
   addon:BindViewToController(self.Events, "VRNUI.Events")
 
-  self.Sets = CreateFrame("Frame", "VRNSetsList", UIParent, "VRNSetsListTemplate")
+  -- self.Sets = CreateFrame("Frame", "VRNSetsList", UIParent, "VRNSetsListTemplate")
 end
