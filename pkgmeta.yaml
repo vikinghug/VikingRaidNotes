@@ -11,3 +11,6 @@ move-folders:
 
 required-dependencies:
   - vikingsharedlib
+
+ignore:
+  - Mockups
