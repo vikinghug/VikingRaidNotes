@@ -41,10 +41,10 @@ addon:Service("VRNUI.CommService", {
       end,
 
       SetPlayerNotes = function(self, buttonID)
-        local notes = SettingsService.GetNotesForButton(buttonID)
-        local button = SettingsService.GetButton(buttonID)
-        local set = SettingsService.GetSet(button.setID)
-        local channels = SettingsService.GetChannels()
+        local notes = SettingsService:GetNotesForButton(buttonID)
+        local button = SettingsService:GetButton(buttonID)
+        local set = SettingsService:GetSet(button.setID)
+        local channels = SettingsService:GetChannels()
 
         local data = {
           buttonID = buttonID,
@@ -57,8 +57,13 @@ addon:Service("VRNUI.CommService", {
         AceComm:SendCommMessage("VRN_NOTES_SET", AceSerializer:Serialize(data), "RAID", nil, "ALERT")
       end,
 
+      PushNote = function(self, noteID)
+        local data = AceSerializer:Serialize({SettingsService:GetNote(noteID)})
+        AceComm:SendCommMessage("VRN_NOTES_PUSH", data, "RAID", nil, "ALERT")
+      end,
+
       PushNotesForButton = function(self, buttonID)
-        local data = AceSerializer:Serialize(SettingsService.GetNotesForButton(buttonID))
+        local data = AceSerializer:Serialize(SettingsService:GetNotesForButton(buttonID))
         AceComm:SendCommMessage("VRN_NOTES_PUSH", data, "RAID", nil, "ALERT")
       end,
 

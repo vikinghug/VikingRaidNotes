@@ -22,7 +22,7 @@ addon:Controller("VRNUI.Note", { "VRNUI.SettingsService", "VRNUI.FormatterServic
         frame.NoteText.Text:SetText(FormatterService.ParseText(noteData.value))
 
         local width, height = frame:GetNoteSize()
-        if (not SettingsService.GetChannel(frame.channelID).collapsed) then
+        if (not SettingsService:GetChannel(frame.channelID).collapsed) then
           frame:SetSize(width, height)
         end
 
@@ -38,13 +38,13 @@ addon:Controller("VRNUI.Note", { "VRNUI.SettingsService", "VRNUI.FormatterServic
     end,
 
     Collapse = function(frame)
-      SettingsService.CollapseChannel(frame.channelID)
+      SettingsService:CollapseChannel(frame.channelID)
       frame:SetHeight(TITLE_BAR_HEIGHT)
       frame.NoteText:Hide()
     end,
 
     Expand = function(frame)
-      SettingsService.ExpandChannel(frame.channelID)
+      SettingsService:ExpandChannel(frame.channelID)
       local _, height = frame:GetNoteSize()
       frame:SetHeight(height)
       frame.NoteText:Show()

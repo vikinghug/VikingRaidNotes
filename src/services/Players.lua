@@ -91,6 +91,19 @@ addon:Service("VRNUI.PlayersService", function()
       end
 
       return players
-    end
+    end,
+
+    GetPlayersList = function(self)
+      local players = {}
+      for k, v in pairs(addon.db.profile.players) do
+        table.insert(players, {
+          name = v.name,
+          class = v.class,
+          textColor = v.textColor,
+          version = v.version or self:GetVersionText(k)
+        })
+      end
+      return players
+    end,
   }
 end)

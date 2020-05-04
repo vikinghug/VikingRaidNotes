@@ -7,10 +7,17 @@ local ICON_COLOR_NORMAL = {1, 1, 1, 0.25}
 local ICON_COLOR_HOVER = {1, 1, 1, 1}
 
 addon:Controller("VRNUI.CollapseButton", {
+  OnBind = function(frame)
+    frame:SetFrameStrata("DIALOG")
+  end,
+
   OnClick = function(frame)
-    frame:GetParent():Collapse()
-    frame:GetParent().CollapseButton:Hide()
-    frame:GetParent().ExpandButton:Show()
+    local parent = frame:GetParent()
+    parent:Collapse()
+    parent.CollapseButton:Hide()
+    parent.ExpandButton:Show()
+    local frameLevel = parent:GetFrameLevel()
+    parent:SetFrameLevel(frameLevel)
   end,
 
   OnEnter = function(frame)
@@ -25,12 +32,16 @@ addon:Controller("VRNUI.CollapseButton", {
 addon:Controller("VRNUI.ExpandButton", {
   OnBind = function(frame)
     frame:SetIconColor(ICON_COLOR_NORMAL)
+    frame:SetFrameStrata("HIGH")
   end,
 
   OnClick = function(frame)
-    frame:GetParent():Expand()
-    frame:GetParent().CollapseButton:Show()
-    frame:GetParent().ExpandButton:Hide()
+    local parent = frame:GetParent()
+    parent:Expand()
+    parent.CollapseButton:Show()
+    parent.ExpandButton:Hide()
+    local frameLevel = parent:GetFrameLevel()
+    parent:SetFrameLevel(frameLevel)
   end,
 
   OnEnter = function(frame)

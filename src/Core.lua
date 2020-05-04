@@ -4,7 +4,7 @@ local addonName = ...
 _G[addonName] = LibStub("AceAddon-3.0"):NewAddon(addonName, "LibMVC-1.0")
 
 local addon = _G[addonName]
-addon.Version = "0.0.4"
+addon.Version = "0.0.5"
 VRN = addon
 
 local Services = {}; addon.Services = Services;

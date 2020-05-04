@@ -13,7 +13,7 @@ addon:Controller("VRNUI.SetButton", { "VRNUI.SettingsService", function(Settings
     end,
 
     Update = function(frame, id)
-      local set = SettingsService.GetSet(id)
+      local set = SettingsService:GetSet(id)
       frame:SetLabel(set.name)
     end
   }

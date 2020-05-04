@@ -3,4 +3,5 @@
   <Script file="Players.lua" />
   <Script file="Settings.lua" />
   <Script file="Comm.lua" />
+  <Script file="Auth.lua" />
 </Ui>

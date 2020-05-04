@@ -16,7 +16,7 @@
 
     <Frames>
 
-      <Frame name="$parentButtons" parentKey="Buttons" inherits="VRNSetsListContentTemplate">
+      <Frame name="$parentButtons" parentKey="Buttons" enablemouse="true" inherits="VRNSetsListContentTemplate">
         <Anchors>
           <Anchor point="TOPRIGHT" relativeKey="$parent" relativePoint="TOPRIGHT" x="-5" y="0" />
         </Anchors>
@@ -36,7 +36,7 @@
         </Layers>
       </Frame>
 
-      <Frame name="$parentSets" parentKey="Sets" inherits="VRNSetsListContentTemplate">
+      <Frame name="$parentSets" parentKey="Sets" enablemouse="true" inherits="VRNSetsListContentTemplate">
         <Anchors>
           <Anchor point="TOPRIGHT" relativeKey="$parent.Buttons" relativePoint="TOPLEFT" x="0" y="0" />
         </Anchors>
@@ -60,8 +60,17 @@
 
   </Frame>
 
-  <Frame name="VRNSetsListContentTemplate" virtual="true">
+  <Frame name="VRNSetsListContentTemplate" enablemouse="true" virtual="true">
     <Size x="128" y="3" />
+
+    <Scripts>
+      <OnEnter>
+        self:OnEnter()
+      </OnEnter>
+      <OnLeave>
+        self:OnLeave()
+      </OnLeave>
+    </Scripts>
   </Frame>
 
   <Button name="VRNListButtonTemplate" virtual="true">

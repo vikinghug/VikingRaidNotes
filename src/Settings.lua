@@ -229,7 +229,7 @@ local i = 1
 
 local bool = false
 Options.options2 = {
-  name = "Options 2",
+  name = "Notes Configuration",
   type = 'group',
   childGroups = "tab",
   args = { }
@@ -281,11 +281,11 @@ function Options:UpdateSetsOptions()
 
   for _, set in ipairs(sets) do
     local buttons = {}
-    for _, btn in ipairs(addon.Services.SettingsService.GetButtonsForSet(set.id)) do
+    for _, btn in ipairs(addon.Services.SettingsService:GetButtonsForSet(set.id)) do
       local channels = {}
 
-      for _, channel in ipairs(addon.Services.SettingsService.GetChannels()) do
-        local note = addon.Services.SettingsService.GetNoteForChannel(btn.id, channel.id)
+      for _, channel in ipairs(addon.Services.SettingsService:GetChannels()) do
+        local note = addon.Services.SettingsService:GetNoteForChannel(btn.id, channel.id)
         -- channels[channel.name] = {
         --   type = "header",
         --   order = channel.order,
@@ -308,31 +308,41 @@ function Options:UpdateSetsOptions()
           name = channelColor:ToText() .. channel.name .. "|r",
           order = channel.order + 0.1,
           fontSize = "large",
+          width = "half",
+        }
+
+        channels[channel.name .. "_sync"] = {
+          type = "execute",
+          name = "Push to Raid Members",
+          order = channel.order + 0.2,
+          width = "double",
+          func = function()
+            addon.Services.CommService:PushNote(note.id)
+          end
         }
 
         channels[channel.name .. "_note"] = {
           name = "Note Value",
           desc = description,
-          order = channel.order + 0.2,
+          order = channel.order + 0.3,
           type = "input",
           width = "full",
           multiline = 10,
           set = function(info, val)
             addon.Services.SettingsService:SetNoteForChannel(btn.id, channel.id, val)
-            addon.Frame:SetNotes(btn.id)
+            -- addon.Frame:SetNotes(btn.id)
           end,
 
           get = function(info)
-            local noteData = addon.Services.SettingsService.GetNoteForChannel(btn.id, channel.id)
+            local noteData = addon.Services.SettingsService:GetNoteForChannel(btn.id, channel.id)
             return noteData and noteData.value or ""
           end
         }
 
         channels[channel.name .. "_desc"] =  {
           type = "description",
-          order = channel.order + 0.3,
-          name =
-            "Last Updated: " .. ((note and note.updatedAt) and note.updatedAt or "Never") ..
+          name = function(info, val)
+            return "Last Updated: " .. ((note and note.updatedAt) and note.updatedAt or "Never") ..
             (note and (
               ", id: " .. note.id ..
               ", btnID: " .. note.buttonID ..
@@ -340,6 +350,9 @@ function Options:UpdateSetsOptions()
               ", channelID: " .. note.channelID
             ) or "") ..
             "\n\n"
+          end,
+          width = "full",
+          order = channel.order + 0.4,
         }
       end
 
@@ -412,15 +425,27 @@ end
 
 --   AceConfigRegistry:NotifyChange(addonName .. ".players")
 -- end
-
-local function getSortedPlayers()
-  local players = addon.Services.PlayersService.GetRaidPlayers()
-
-  table.sort(players, function(a, b) return a.name:upper() < b.name:upper() end)
-  return players
+local function RaidPlayersData()
+  local data =
+    IsInGroup() and
+    addon.Services.PlayersService:GetRaidPlayers() or
+    {};
+  return data
 end
 
-local function PlayerList(frame)
+local function AllPlayersData()
+  local data = addon.Services.PlayersService:GetPlayersList()
+  return data
+end
+
+local function getSortedPlayers(data)
+  table.sort(data, function(a, b) return a.name:upper() < b.name:upper() end)
+  return data
+end
+
+local function PlayerList(frame, data)
+  frame:ReleaseChildren()
+
   local scrollContainer = AceGUI:Create("SimpleGroup")
   scrollContainer:SetFullWidth(true)
   scrollContainer:SetHeight(250)
@@ -432,7 +457,7 @@ local function PlayerList(frame)
 
   local playerVersions = {}
 
-  for i, player in ipairs(getSortedPlayers()) do
+  for i, player in ipairs(getSortedPlayers(data)) do
     local playerContainer = AceGUI:Create("SimpleGroup")
     local label = AceGUI:Create("Label")
     local version = AceGUI:Create("Label")
@@ -478,12 +503,29 @@ function Options:PlayersVersionWindow()
   frame:SetHeight(400)
 
   local header = AceGUI:Create("SimpleGroup")
-  local contents = AceGUI:Create("InlineGroup")
+  local contents = AceGUI:Create("TabGroup")
+  contents:SetTabs({
+    {value = "raid", text = "raid" },
+    {value = "all", text = "all players" },
+  })
+  contents:SelectTab("raid")
   contents:SetLayout("Fill")
   contents:SetFullWidth(true)
   contents:SetFullHeight(true)
 
-  local playerVersions = PlayerList(contents)
+  local playerVersions = PlayerList(contents, RaidPlayersData())
+
+  contents:SetCallback("OnGroupSelected", function(group, event, key)
+    local data
+
+    if (key == "raid") then
+      data = RaidPlayersData()
+    elseif (key == "all") then
+      data = AllPlayersData()
+    end
+    playerVersions = PlayerList(group, data)
+  end)
+
 
   local syncButton = AceGUI:Create("Button")
   syncButton:SetFullWidth(true)
@@ -492,6 +534,24 @@ function Options:PlayersVersionWindow()
     for k, v in pairs(playerVersions) do
       v:SetText(VSL.Colors.DARK_GREY:ToText() .. "...")
     end
+
+    widget:SetDisabled(true)
+
+    local function animateText(frame, base, char, interval)
+      local i = 0
+      local myTimer = C_Timer.NewTicker(interval, function()
+        widget:SetText(base .. string.rep(char, (i % 4)))
+        i = i + 1
+      end)
+      return myTimer
+    end
+
+    local timer = animateText(widget, "Scanning", ".", 0.25)
+    C_Timer.After(3, function()
+      timer:Cancel()
+      widget:SetText("Scan for Versions")
+      widget:SetDisabled(false)
+    end)
 
     addon.Services.CommService:CheckVersions(playerVersions, function(player, online)
       C_Timer.After(2, function()

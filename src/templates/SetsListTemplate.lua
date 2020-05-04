@@ -30,6 +30,11 @@ addon:Controller("VRNUI.ControlButtons", {
           end
         end)
       end,
+
+      CloseNow = function(frame)
+        frame.over = false
+        frame:Hide()
+      end
     }
   end
 })
@@ -131,6 +136,16 @@ local SetsListContentMixins = function(SettingsService, CommService, OnClick)
 
       return height + 12
     end,
+
+    OnEnter = function(frame)
+      local parent = frame:GetParent()
+      parent.Open(parent)
+    end,
+
+    OnLeave = function(frame)
+      local parent = frame:GetParent()
+      parent.Close(parent)
+    end,
   }
 end
 
@@ -140,18 +155,10 @@ addon:Controller("VRNUI.SetsList", {
   function(SettingsService, CommService)
     return {
       OnBind = function(frame)
-        frame:SetScript("OnEnter", function(this)
-          frame.GetParent():Open()
-        end)
-
-        frame:SetScript("OnLeave", function(this)
-          frame.GetParent():Close()
-        end)
-
         local OnClick = function(this)
-          SettingsService.SelectSet(this.id)
+          SettingsService:SelectSet(this.id)
           this:GetParent():Update(SettingsService.Sets())
-          this:GetParent():GetParent().Buttons:Update(SettingsService.SelectedSetButtons())
+          this:GetParent():GetParent().Buttons:Update(SettingsService:SelectedSetButtons())
         end
 
         for k, v in pairs(SetsListContentMixins(SettingsService, CommService, OnClick)) do
@@ -174,18 +181,10 @@ addon:Controller("VRNUI.NotesList", {
   function(SettingsService, CommService)
     return {
       OnBind = function(frame)
-        frame:SetScript("OnEnter", function(this)
-          frame.GetParent():Open()
-        end)
-
-        frame:SetScript("OnLeave", function(this)
-          frame.GetParent():Close()
-        end)
-
         local OnClick = function(this)
-          SettingsService.SelectNote(this.id)
+          SettingsService:SelectNote(this.id)
           CommService:SetPlayerNotes(this.id)
-          this:GetParent():Update(SettingsService.SelectedSetButtons())
+          this:GetParent():Update(SettingsService:SelectedSetButtons())
           if (this:GetParent():GetParent().Redraw) then
             this:GetParent():GetParent():Redraw()
           end
@@ -195,7 +194,7 @@ addon:Controller("VRNUI.NotesList", {
           frame[k] = v
         end
 
-        frame.Update(frame, SettingsService.SelectedSetButtons())
+        frame.Update(frame, SettingsService:SelectedSetButtons())
       end,
     }
   end

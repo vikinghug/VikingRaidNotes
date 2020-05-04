@@ -15,7 +15,7 @@
     </Scripts>
 
     <Frames>
-      <Frame name="$parentTitleBar" parentKey="TitleBar">
+      <Frame name="$parentTitleBar" parentKey="TitleBar" enablemouse="true">
         <Size x="256" y="26" />
         <Anchors>
           <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="TOPLEFT" />
@@ -23,20 +23,14 @@
         </Anchors>
 
         <Layers>
-          <Layer level="ARTWORK">
+          <Layer level="BACKGROUND">
             <Texture setAllPoints="true">
               <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.8" />
             </Texture>
+          </Layer>
 
+          <Layer level="ARTWORK">
             <FontString name="$parentText" parentKey="Text" font="Interface\Addons\VikingSharedLib\assets\fonts\Montserrat-Regular.ttf" justifyV="CENTER" justifyH="LEFT">
-              <Anchors>
-                <Anchor point="LEFT" relativeKey="$parent" relativepoint="LEFT">
-                  <Offset>
-                    <AbsDimension x="6" y="0" />
-                  </Offset>
-                </Anchor>
-              </Anchors>
-
               <Color r="1" g="1" b="1" />
               <FontHeight val="12" />
 
@@ -44,13 +38,48 @@
           </Layer>
         </Layers>
       </Frame>
-      <Button name="VRNNotesSettings" parentKey="NotesSettings" inherits="VRNIconButtonTemplate" virtual="true">
+
+      <Button name="$parentSetsListButton" parentKey="SetsListButton" inherits="VRNIconButtonTemplate">
+        <Size x="12" y="12" />
+
+        <Scripts>
+          <OnLoad>
+            VikingRaidNotes:BindViewToController(self, "VRNUI.SetsListButton", "VRNUI.IconButton")
+          </OnLoad>
+          <OnShow>
+            self:OnShow()
+          </OnShow>
+          <OnClick>
+            self:OnClick()
+          </OnClick>
+          <OnEnter>
+            self:OnEnter()
+          </OnEnter>
+          <OnLeave>
+            self:OnLeave()
+          </OnLeave>
+        </Scripts>
+
+        <KeyValues>
+          <KeyValue key="Sprite" value="hamburger" />
+          <KeyValue key="IconColor" value="1,1,1,0.25" />
+        </KeyValues>
+
+        <Anchors>
+          <Anchor point="LEFT" x="6" />
+        </Anchors>
+      </Button>
+
+      <Button name="VRNNotesSettings" parentKey="NotesSettings" inherits="VRNIconButtonTemplate">
         <Size x="12" y="12" />
 
         <Scripts>
           <OnLoad>
             VikingRaidNotes:BindViewToController(self, "VRNUI.NotesSettings", "VRNUI.IconButton")
           </OnLoad>
+          <OnShow>
+            self:OnShow()
+          </OnShow>
           <OnEnter>
             self:OnEnter()
           </OnEnter>
@@ -69,13 +98,16 @@
         </Anchors>
       </Button>
 
-      <Button name="VRNVersionIcon" parentKey="VersionIcon" inherits="VRNIconButtonTemplate" virtual="true">
+      <Button name="VRNVersionIcon" parentKey="VersionIcon" inherits="VRNIconButtonTemplate">
         <Size x="12" y="12" />
 
         <Scripts>
           <OnLoad>
             VikingRaidNotes:BindViewToController(self, "VRNUI.VersionIcon", "VRNUI.IconButton")
           </OnLoad>
+          <OnShow>
+            self:OnShow()
+          </OnShow>
           <OnEnter>
             self:OnEnter()
           </OnEnter>

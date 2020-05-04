@@ -35,23 +35,49 @@ addon:Service("VRNUI.SettingsService", function()
       return notes
     end,
 
-    GetNoteForChannel = function(buttonID, channelID)
+    GetNoteForChannel = function(self, buttonID, channelID)
+      local found = false
       for i, v in ipairs(addon.db.profile.notes) do
         if (v.buttonID == buttonID and v.channelID == channelID) then
-          return v
+          found = v
         end
+      end
+
+      if (not found) then
+        local timestamp = time()
+        local button = self:GetButton(buttonID)
+        local channel = self:GetChannel(channelID)
+
+        -- TODO: MAKE THIS TRULY UNIQUE... this is a really unpredictable way of doing this
+        local id = #addon.db.profile.notes
+        table.insert(addon.db.profile.notes, {
+          setID = button.setID,
+          id = id,
+          buttonID = buttonID,
+          channelID = channelID,
+          name = channel.name .. "_" .. button.name,
+          order = id,
+          value = "",
+          updatedAt = timestamp
+        })
+
+        return self:GetNote(id)
+      else
+        return found
       end
     end,
 
     SetNoteForChannel = function(self, buttonID, channelID, value)
-      local button = self.GetButton(buttonID)
-      local set = self.GetSet(button.setID)
-      local channel = self.GetChannel(channelID)
+      local timestamp = time()
+      local button = self:GetButton(buttonID)
+      local set = self:GetSet(button.setID)
+      local channel = self:GetChannel(channelID)
 
       local found = false
       for i, v in ipairs(addon.db.profile.notes) do
         if (v.buttonID == buttonID and v.channelID == channelID) then
           v.value = value
+          v.updatedAt = timestamp
           found = true
         end
       end
@@ -64,7 +90,8 @@ addon:Service("VRNUI.SettingsService", function()
           channelID = channel.id,
           name = channel.name .. "_" .. button.name,
           order = #addon.db.profile.notes,
-          value = value
+          value = value,
+          updatedAt = timestamp
         })
       end
     end,
@@ -95,15 +122,15 @@ addon:Service("VRNUI.SettingsService", function()
       end
     end,
 
-    SelectSet = function(id)
+    SelectSet = function(self, id)
       addon.db.profile.selectedSet = id
     end,
 
-    SelectNote = function(id)
+    SelectNote = function(self, id)
       addon.db.profile.selectedNote = id
     end,
 
-    GetButton = function(id)
+    GetButton = function(self, id)
       for i, v in ipairs(addon.db.profile.bosses) do
         if v.id == id then
           return v
@@ -111,7 +138,7 @@ addon:Service("VRNUI.SettingsService", function()
       end
     end,
 
-    GetSet = function(id)
+    GetSet = function(self, id)
       for i, v in ipairs(addon.db.profile.sets) do
         if v.id == id then
           return v
@@ -119,7 +146,7 @@ addon:Service("VRNUI.SettingsService", function()
       end
     end,
 
-    GetButtonsForSet = function(setID)
+    GetButtonsForSet = function(self, setID)
       return filter(addon.db.profile.bosses, function(v)
         if v.setID == setID then
           return v
@@ -127,7 +154,7 @@ addon:Service("VRNUI.SettingsService", function()
       end)
     end,
 
-    GetNote = function(id)
+    GetNote = function(self, id)
       for i, v in ipairs(addon.db.profile.notes) do
         if v.id == id then
           return v
@@ -135,7 +162,7 @@ addon:Service("VRNUI.SettingsService", function()
       end
     end,
 
-    GetNotesForButton = function(buttonID)
+    GetNotesForButton = function(self, buttonID)
       return filter(addon.db.profile.notes, function(v)
         if v.buttonID == buttonID then
           return v
@@ -143,7 +170,7 @@ addon:Service("VRNUI.SettingsService", function()
       end)
     end,
 
-    GetChannel = function(id)
+    GetChannel = function(self, id)
       for i, v in ipairs(addon.db.profile.channels) do
         if v.id == id then
          return v
@@ -151,11 +178,11 @@ addon:Service("VRNUI.SettingsService", function()
       end
     end,
 
-    GetChannels = function()
+    GetChannels = function(self)
       return addon.db.profile.channels
     end,
 
-    CollapseChannel = function(id)
+    CollapseChannel = function(self, id)
       for i, v in ipairs(addon.db.profile.channels) do
         if v.id == id then
           v.collapsed = true
@@ -163,7 +190,7 @@ addon:Service("VRNUI.SettingsService", function()
       end
     end,
 
-    ExpandChannel = function(id)
+    ExpandChannel = function(self, id)
       for i, v in ipairs(addon.db.profile.channels) do
         if v.id == id then
           v.collapsed = false
