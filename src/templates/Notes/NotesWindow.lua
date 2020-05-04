@@ -1,4 +1,6 @@
 local VSL = LibStub("VikingSharedLib")
+local AceConfigDialog = LibStub("AceConfigDialog-3.0")
+
 local addonName = ...
 
 local addon = _G[addonName]
@@ -40,10 +42,9 @@ addon:Controller("VRNUI.NotesWindow", { "VRNUI.SettingsService", function(Settin
 
       frame:SetNotes(addon.db.profile, SettingsService.SelectedNote())
 
-
       frame:SetClampedToScreen(true)
 
-      -- frame.TitleBar:SetClampedToScreen(true)
+      frame.TitleBar:SetFrameStrata("LOW")
       frame.TitleBar:RegisterForDrag("LeftButton")
 
       frame.TitleBar:SetScript("OnDragStart", function()
@@ -110,3 +111,42 @@ addon:Controller("VRNUI.NotesWindow", { "VRNUI.SettingsService", function(Settin
     end,
   }
 end})
+
+local ICON_COLOR_NORMAL = {1, 1, 1, 0.25}
+local ICON_COLOR_HOVER = {1, 1, 1, 1}
+
+addon:Controller("VRNUI.NotesSettings", {
+  OnBind = function(frame)
+    frame:SetFrameStrata("DIALOG")
+  end,
+
+  OnClick = function(frame)
+    AceConfigDialog:Open("VikingRaidNotes.options2")
+  end,
+
+  OnEnter = function(frame)
+    frame:SetIconColor(ICON_COLOR_HOVER)
+  end,
+
+  OnLeave = function(frame)
+    frame:SetIconColor(ICON_COLOR_NORMAL)
+  end
+})
+
+addon:Controller("VRNUI.VersionIcon", {
+  OnBind = function(frame)
+    frame:SetFrameStrata("DIALOG")
+  end,
+
+  OnClick = function(frame)
+    addon.Options:PlayersVersionWindow()
+  end,
+
+  OnEnter = function(frame)
+    frame:SetIconColor(ICON_COLOR_HOVER)
+  end,
+
+  OnLeave = function(frame)
+    frame:SetIconColor(ICON_COLOR_NORMAL)
+  end
+})

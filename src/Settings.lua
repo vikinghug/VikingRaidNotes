@@ -420,7 +420,9 @@ local function PlayerList(frame)
   return playerVersions
 end
 
-local function PlayersVersionWindow()
+function Options:PlayersVersionWindow()
+  if (Options.playersFrameShown) then return end
+
   local frame = AceGUI:Create("Window")
   frame:SetTitle("Players")
   frame:SetStatusText("AceGUI-3.0 Example Container Frame")
@@ -448,9 +450,10 @@ local function PlayersVersionWindow()
       v:SetText(VSL.Colors.DARK_GREY:ToText() .. "...")
     end
 
-    addon.Services.CommService:CheckVersions(playerVersions, function(player)
+    addon.Services.CommService:CheckVersions(playerVersions, function(player, online)
       C_Timer.After(2, function()
         playerVersions[player]:SetText(
+          (online and "" or (VSL.Colors.DARK_GREY:ToText() .. "offline|r ")) ..
           addon.Services.PlayersService:GetVersionTextColor(player) ..
           addon.Services.PlayersService:GetVersionText(player)
         )
@@ -486,8 +489,6 @@ function Options:OnLoad()
   -- AceConfig:RegisterOptionsTable(addonName .. ".players", Options.players)
   -- AceConfigDialog:AddToBlizOptions(addonName .. ".players", "Players", addonName)
   AceConsole:RegisterChatCommand("vrnp", function()
-    if (not Options.playersFrameShown) then
-      PlayersVersionWindow()
-    end
+    Options:PlayersVersionWindow()
   end)
 end

@@ -44,6 +44,55 @@
           </Layer>
         </Layers>
       </Frame>
+      <Button name="VRNNotesSettings" parentKey="NotesSettings" inherits="VRNIconButtonTemplate" virtual="true">
+        <Size x="12" y="12" />
+
+        <Scripts>
+          <OnLoad>
+            VikingRaidNotes:BindViewToController(self, "VRNUI.NotesSettings", "VRNUI.IconButton")
+          </OnLoad>
+          <OnEnter>
+            self:OnEnter()
+          </OnEnter>
+          <OnLeave>
+            self:OnLeave()
+          </OnLeave>
+        </Scripts>
+
+        <KeyValues>
+          <KeyValue key="Sprite" value="settings" />
+          <KeyValue key="IconColor" value="1,1,1,0.25" />
+        </KeyValues>
+
+        <Anchors>
+          <Anchor point="RIGHT" x="-22" />
+        </Anchors>
+      </Button>
+
+      <Button name="VRNVersionIcon" parentKey="VersionIcon" inherits="VRNIconButtonTemplate" virtual="true">
+        <Size x="12" y="12" />
+
+        <Scripts>
+          <OnLoad>
+            VikingRaidNotes:BindViewToController(self, "VRNUI.VersionIcon", "VRNUI.IconButton")
+          </OnLoad>
+          <OnEnter>
+            self:OnEnter()
+          </OnEnter>
+          <OnLeave>
+            self:OnLeave()
+          </OnLeave>
+        </Scripts>
+
+        <KeyValues>
+          <KeyValue key="Sprite" value="show" />
+          <KeyValue key="IconColor" value="1,1,1,0.25" />
+        </KeyValues>
+
+        <Anchors>
+          <Anchor point="RIGHT" x="-38" />
+        </Anchors>
+      </Button>
 
       <Button name="$parentCollapse" inherits="VRNCollapseButtonTemplate" />
       <Button name="$parentExpand" inherits="VRNExpandButtonTemplate" />

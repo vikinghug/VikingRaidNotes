@@ -8,14 +8,6 @@ addon:Controller("VRNUI.ControlButtons", {
     return {
       OnBind = function(frame)
         frame:Hide()
-
-        frame:SetScript("OnEnter", function(this)
-          frame:Open()
-        end)
-
-        frame:SetScript("OnLeave", function(this)
-          frame:Close()
-        end)
       end,
 
       Open = function(frame)
@@ -25,11 +17,6 @@ addon:Controller("VRNUI.ControlButtons", {
       end,
 
       Redraw = function(frame)
-        frame:SetSize(
-          frame.Sets:GetRealWidth() + frame.Buttons:GetRealWidth(),
-          math.max(frame.Sets:GetRealHeight(), frame.Buttons:GetRealHeight()) + 12
-        )
-
         frame.Sets:Redraw()
         frame.Buttons:Redraw()
       end,
@@ -37,7 +24,7 @@ addon:Controller("VRNUI.ControlButtons", {
       Close = function(frame)
         frame.over = false
 
-        C_Timer.After(2, function()
+        C_Timer.After(1.25, function()
           if frame.over == false then
             frame:Hide()
           end
@@ -153,6 +140,14 @@ addon:Controller("VRNUI.SetsList", {
   function(SettingsService, CommService)
     return {
       OnBind = function(frame)
+        frame:SetScript("OnEnter", function(this)
+          frame.GetParent():Open()
+        end)
+
+        frame:SetScript("OnLeave", function(this)
+          frame.GetParent():Close()
+        end)
+
         local OnClick = function(this)
           SettingsService.SelectSet(this.id)
           this:GetParent():Update(SettingsService.Sets())
@@ -168,8 +163,6 @@ addon:Controller("VRNUI.SetsList", {
           frame:GetRealWidth(),
           frame:GetRealHeight()
         )
-        -- frame:ClearAllPoints()
-        -- frame:SetPoint("TOPRIGHT", frame:GetParent():GetParent().Buttons, "TOPLEFT", 0, 0)
       end,
     }
   end
@@ -181,6 +174,14 @@ addon:Controller("VRNUI.NotesList", {
   function(SettingsService, CommService)
     return {
       OnBind = function(frame)
+        frame:SetScript("OnEnter", function(this)
+          frame.GetParent():Open()
+        end)
+
+        frame:SetScript("OnLeave", function(this)
+          frame.GetParent():Close()
+        end)
+
         local OnClick = function(this)
           SettingsService.SelectNote(this.id)
           CommService:SetPlayerNotes(this.id)
@@ -195,9 +196,6 @@ addon:Controller("VRNUI.NotesList", {
         end
 
         frame.Update(frame, SettingsService.SelectedSetButtons())
-        -- frame:ClearAllPoints()
-        -- frame:SetPoint("TOPRIGHT", frame:GetParent(), "TOPRIGHT")
-        -- frame:SetPoint("TOPLEFT", frame:GetParent(), "TOPRIGHT", -frame:GetRealWidth())
       end,
     }
   end

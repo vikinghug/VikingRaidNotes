@@ -18,7 +18,7 @@
 
       <Frame name="$parentButtons" parentKey="Buttons" inherits="VRNSetsListContentTemplate">
         <Anchors>
-          <Anchor point="TOPRIGHT" relativeKey="$parent" relativePoint="TOPRIGHT" x="0" y="0" />
+          <Anchor point="TOPRIGHT" relativeKey="$parent" relativePoint="TOPRIGHT" x="-5" y="0" />
         </Anchors>
 
         <Scripts>
@@ -30,7 +30,7 @@
         <Layers>
           <Layer level="BACKGROUND">
             <Texture setAllPoints="true">
-              <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.75" />
+              <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.5" />
             </Texture>
           </Layer>
         </Layers>
@@ -50,7 +50,7 @@
         <Layers>
           <Layer level="ARTWORK">
             <Texture setAllPoints="true">
-              <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.5" />
+              <Color r="0.117647059" g="0.0431372549" b="0.149019608" a="0.25" />
             </Texture>
           </Layer>
         </Layers>

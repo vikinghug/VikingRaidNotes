@@ -33,16 +33,10 @@ addon:Service("VRNUI.CommService", {
       end,
 
       VERSION_PULL = function(self, text, channel, sender)
-        local playerName = UnitName("player")
-        if (sender == playerName) then return end
-
         self:SendVersionTo(sender)
       end,
 
       VERSION_PUSH = function(self, text, channel, sender, ...)
-        local playerName = UnitName("player")
-        if (sender == playerName) then return end
-
         PlayersService:SetPlayerVersion(sender, text)
       end,
 
@@ -70,11 +64,15 @@ addon:Service("VRNUI.CommService", {
 
       CheckVersions = function(self, players, callback)
         for k, v in pairs(players) do
-          AceComm:SendCommMessage("VRN_VERSION_PULL", addon.Version, "WHISPER", k, nil, function()
-            if (callback) then
-              callback(k)
-            end
-          end)
+          if (UnitIsConnected(k)) then
+            AceComm:SendCommMessage("VRN_VERSION_PULL", addon.Version, "WHISPER", k, nil, function()
+              if (callback) then
+                callback(k, true)
+              end
+            end)
+          else
+            callback(k, false)
+          end
         end
       end,
 
