@@ -36,6 +36,11 @@ local dbDefaults = {
     selectedSet = 409,
     selectedNote = 12118,
 
+    notesPosition = {
+      x = GetScreenWidth() - 60,
+      y = GetScreenHeight() - 60
+    },
+
     sets = {
       { id = 409, name = "Molten Core", short = "MC", order = 1, createdAt = 1588447958, updatedAt = 1588447958 },
       { id = 469, name = "Blackwing Lair", short = "BWL", order = 2, createdAt = 1588447958, updatedAt = 1588447958 },

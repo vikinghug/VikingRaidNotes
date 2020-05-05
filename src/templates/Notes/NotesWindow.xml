@@ -4,10 +4,6 @@
   <Frame name="VRNNotesWindowTemplate" virtual="true" movable="true">
     <Size x="256" y="26" />
 
-    <Anchors>
-      <Anchor point="CENTER" relativeTo="UIParent" />
-    </Anchors>
-
     <Scripts>
       <OnLoad>
         VikingRaidNotes:BindViewToController(self, "VRNUI.NotesWindow")

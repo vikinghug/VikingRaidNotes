@@ -182,6 +182,13 @@ addon:Service("VRNUI.SettingsService", function()
       return addon.db.profile.channels
     end,
 
+    SaveNotesPosition = function(self, x, y)
+      addon.db.profile.notesPosition = {
+        x = x,
+        y = y,
+      }
+    end,
+
     CollapseChannel = function(self, id)
       for i, v in ipairs(addon.db.profile.channels) do
         if v.id == id then

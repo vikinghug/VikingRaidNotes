@@ -41,6 +41,15 @@ addon:Controller("VRNUI.NotesWindow", {
           table.insert(pool, note)
         end
 
+        frame:SetDontSavePosition(true)
+        frame:SetPoint(
+          "TOPRIGHT",
+          UIParent,
+          "BOTTOMLEFT",
+          addon.db.profile.notesPosition.x,
+          addon.db.profile.notesPosition.y
+        )
+
         frame.ExpandButton:Hide()
 
         frame:SetNotes(addon.db.profile, SettingsService.SelectedNote())
@@ -51,11 +60,11 @@ addon:Controller("VRNUI.NotesWindow", {
         frame.TitleBar:RegisterForDrag("LeftButton")
 
         frame.TitleBar:SetScript("OnDragStart", function()
-          frame:StartMoving()
+          frame:DragStart()
         end)
 
         frame.TitleBar:SetScript("OnDragStop", function()
-          frame:StopMovingOrSizing()
+          frame:DragStop()
         end)
       end,
 
@@ -95,6 +104,18 @@ addon:Controller("VRNUI.NotesWindow", {
         local setData = Helpers:Find(data.sets, buttonData.setID)
 
         frame.TitleBar.Text:SetText(setData.short .. " - " .. buttonData.name)
+      end,
+
+      DragStart = function(frame)
+        frame:StartMoving()
+      end,
+
+      DragStop = function(frame)
+        frame:StopMovingOrSizing()
+        SettingsService:SaveNotesPosition(
+          frame:GetRight(),
+          frame:GetTop()
+        )
       end,
 
       Collapse = function(frame)
@@ -213,6 +234,7 @@ addon:Controller("VRNUI.SetsListButton", {
 
       OnLeave = function(frame)
         frame:SetIconColor(ICON_COLOR_NORMAL)
+        addon.Frame.ControlButtons:Close()
       end
     }
   end
