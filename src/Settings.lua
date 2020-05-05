@@ -15,6 +15,10 @@ local Settings = {}; addon.Settings = Settings
 
 local dbDefaults = {
   profile = {
+    minimap = { hide = false },
+
+    hide = false,
+
     players = {},
 
     classColors = {

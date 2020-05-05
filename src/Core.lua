@@ -4,7 +4,7 @@ local addonName = ...
 _G[addonName] = LibStub("AceAddon-3.0"):NewAddon(addonName, "LibMVC-1.0")
 
 local addon = _G[addonName]
-addon.Version = "0.0.6"
+addon.Version = GetAddOnMetadata("VikingRaidNotes", "Version")
 VRN = addon
 
 local Services = {}; addon.Services = Services;
@@ -36,5 +36,21 @@ function addon:OnInitialize()
   self.Events = CreateFrame("Frame", "VRNEvents", UIParent)
   addon:BindViewToController(self.Events, "VRNUI.Events")
 
-  -- self.Sets = CreateFrame("Frame", "VRNSetsList", UIParent, "VRNSetsListTemplate")
+  LibStub("LibDBIcon-1.0"):Register("VikingRaidNotes", {
+    type = "data source",
+    text = "Viking Raid Notes",
+    icon = "Interface\\Addons\\VikingSharedLib\\assets\\textures\\viking-head-32.tga",
+    OnClick = function()
+      addon.db.profile.minimap.hide = not addon.db.profile.minimap.hide
+      if addon.db.profile.minimap.hide then
+        addon.Frame:Hide()
+      else
+        addon.Frame:Show()
+      end
+    end,
+    OnTooltipShow = function(tooltip)
+      tooltip:AddDoubleLine(format("%s", "VikingRaidNotes"), format("|cff777777v%s", addon.Version));
+      tooltip:AddLine("|cFFCFCFCFLeft Click: |rHide/Show GUI");
+    end
+  }, self.db.profile.minimap)
 end
