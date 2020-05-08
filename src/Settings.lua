@@ -16,6 +16,7 @@ local Settings = {}; addon.Settings = Settings
 local dbDefaults = {
   profile = {
     minimap = { hide = false },
+    notesWindow = { hide = false },
 
     hide = false,
 
