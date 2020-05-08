@@ -41,8 +41,8 @@ function addon:OnInitialize()
     text = "Viking Raid Notes",
     icon = "Interface\\Addons\\VikingSharedLib\\assets\\textures\\viking-head-32.tga",
     OnClick = function()
-      addon.db.profile.minimap.hide = not addon.db.profile.minimap.hide
-      if addon.db.profile.minimap.hide then
+      addon.db.profile.notesWindow.hide = not addon.db.profile.notesWindow.hide
+      if addon.db.profile.notesWindow.hide then
         addon.Frame:Hide()
       else
         addon.Frame:Show()
