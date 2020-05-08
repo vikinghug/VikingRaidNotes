@@ -125,6 +125,14 @@ addon:Controller("VRNUI.NotesWindow", {
       Expand = function(frame)
         frame.Content:Show()
       end,
+
+      HandleVisibility = function(frame)
+        if addon.db.profile.notesWindow.hide then
+          frame:Hide()
+        else
+          frame:Show()
+        end
+      end,
     }
   end
 })

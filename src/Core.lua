@@ -32,6 +32,7 @@ function addon:OnInitialize()
   self.Options:OnLoad()
 
   self.Frame = CreateFrame("Frame", "VikingRaidNotesFrame", UIParent, "VRNNotesWindowTemplate")
+  self.Frame:HandleVisibility()
 
   self.Events = CreateFrame("Frame", "VRNEvents", UIParent)
   addon:BindViewToController(self.Events, "VRNUI.Events")
@@ -42,11 +43,7 @@ function addon:OnInitialize()
     icon = "Interface\\Addons\\VikingSharedLib\\assets\\textures\\viking-head-32.tga",
     OnClick = function()
       addon.db.profile.notesWindow.hide = not addon.db.profile.notesWindow.hide
-      if addon.db.profile.notesWindow.hide then
-        addon.Frame:Hide()
-      else
-        addon.Frame:Show()
-      end
+      addon.Frame:HandleVisibility()
     end,
     OnTooltipShow = function(tooltip)
       tooltip:AddDoubleLine(format("%s", "VikingRaidNotes"), format("|cff777777v%s", addon.Version));
