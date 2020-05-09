@@ -28,12 +28,8 @@
 
       <Frame name="$parentNoteText" parentKey="NoteText">
         <Anchors>
-          <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="TOPLEFT">
-            <Offset>
-              <AbsDimension x="0" y="-18" />
-            </Offset>
-          </Anchor>
-          <Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativepoint="BOTTOMRIGHT" />
+          <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="TOPLEFT" x="0" y="-18" />
+          <Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativepoint="BOTTOMRIGHT" x="0" y="0" />
         </Anchors>
 
         <Layers>
@@ -46,16 +42,8 @@
           <Layer level="ARTWORK">
             <FontString name="$parentText" parentKey="Text" font="Interface\Addons\VikingSharedLib\assets\fonts\Montserrat-Regular.ttf" justifyV="TOP" justifyH="LEFT">
               <Anchors>
-                <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="TOPLEFT">
-                  <Offset>
-                    <AbsDimension x="6" y="-6" />
-                  </Offset>
-                </Anchor>
-                <Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativepoint="BOTTOMRIGHT">
-                  <Offset>
-                    <AbsDimension x="-6" y="6" />
-                  </Offset>
-                </Anchor>
+                <Anchor point="TOPLEFT" relativeKey="$parent" relativepoint="TOPLEFT" x="6" y="-6" />
+                <Anchor point="TOPRIGHT" relativeKey="$parent" relativepoint="TOPRIGHT" x="-6" y="-6" />
               </Anchors>
 
               <Color r="1" g="1" b="1" />

@@ -87,7 +87,7 @@ addon:Service("VRNUI.FormatterService", function()
         :gsub(subReplace('{journal%s+(%d+)}'), function(id)
           return C_EncounterJournal.GetSectionInfo(id) and C_EncounterJournal.GetSectionInfo(id).link
         end)
-        :gsub("[^%s]+", function(s)
+        :gsub("[^%s,-<>:|]+", function(s)
           if not addon.db.profile.players[s] then return s end
           local color = addon.db.profile.players[s].textColor or "ffffffff"
           return s:gsub(s, "|c" .. color .. s .. "|r")

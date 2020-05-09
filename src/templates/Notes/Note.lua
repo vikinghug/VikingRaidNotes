@@ -21,9 +21,9 @@ addon:Controller("VRNUI.Note", { "VRNUI.SettingsService", "VRNUI.FormatterServic
       if noteData ~= nil then
         frame.NoteText.Text:SetText(FormatterService.ParseText(noteData.value))
 
-        local width, height = frame:GetNoteSize()
         if (not SettingsService:GetChannel(frame.channelID).collapsed) then
-          frame:SetSize(width, height)
+          local _, height = frame:GetNoteSize()
+          frame:SetHeight(height)
         end
 
         frame:Show()
@@ -31,8 +31,10 @@ addon:Controller("VRNUI.Note", { "VRNUI.SettingsService", "VRNUI.FormatterServic
     end,
 
     GetNoteSize = function(frame)
-      local width = frame.NoteText.Text:GetStringWidth() + (TEXT_PADDING * 2)
-      local height = frame.NoteText.Text:GetStringHeight() + (TITLE_BAR_HEIGHT + (TEXT_PADDING * 2))
+      local text = frame.NoteText.Text
+
+      local width = text:GetWidth() + (TEXT_PADDING * 2)
+      local height = text:GetHeight() + (TITLE_BAR_HEIGHT + (TEXT_PADDING * 2))
 
       return width, height
     end,

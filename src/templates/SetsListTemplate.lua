@@ -226,13 +226,22 @@ addon:Controller("VRNUI.ListButton", {
 
       ShowTooltip = function(frame)
         local notes = SettingsService:GetNotesForButton(frame.id)
+        local button = SettingsService:GetButton(frame.id)
 
-        GameTooltip:SetOwner(frame, "ANCHOR_BOTTOMLEFT", 5, 0)
+        GameTooltip:SetOwner(frame, "ANCHOR_BOTTOMLEFT", 0, 0)
+        GameTooltip:SetText(button.name .. "\n", 1, 1, 1, nil)
         for i, v in ipairs(notes) do
-          local channel = SettingsService:GetChannel(v.channelID)
-          GameTooltip:AddLine(channel.name, 1, 1, 1, nil)
-          GameTooltip:AddLine(FormatterService.ParseText(v.value), nil, nil, nil, true)
-          GameTooltip:AddLine(" ")
+          if #v.value > 0 then
+            local channel = SettingsService:GetChannel(v.channelID)
+            local channelIcon =
+              "|TInterface\\addons\\VikingSharedLib\\assets\\textures\\channel:10:10:0:0:32:32:0:32:0:32:" ..
+              channel.color.r * 125 .. ":" ..
+              channel.color.g * 125 .. ":" ..
+              channel.color.b * 125 .. "|t "
+            GameTooltip:AddLine(channelIcon .. channel.name, 1, 1, 1, nil)
+            GameTooltip:AddLine(FormatterService.ParseText(v.value), nil, nil, nil, true)
+            GameTooltip:AddLine(" ")
+          end
         end
         GameTooltip:Show()
       end,
