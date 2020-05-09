@@ -177,7 +177,7 @@ addon:Controller("VRNUI.NotesList", {
       end,
 
       OnWidgetClick = function(frame, id)
-        if AuthService:IsAuthorized(UnitName("player"), {2}) then
+        if AuthService:IsAuthorized(UnitName("player"), 2) then
           SettingsService:SelectNote(id)
           CommService:SetPlayerNotes(id)
           frame:Update(SettingsService:SelectedSetButtons())
@@ -227,7 +227,7 @@ addon:Controller("VRNUI.ListButton", {
       ShowTooltip = function(frame)
         local notes = SettingsService:GetNotesForButton(frame.id)
 
-        GameTooltip:SetOwner(frame, "ANCHOR_BOTTOMRIGHT", 5, 0)
+        GameTooltip:SetOwner(frame, "ANCHOR_BOTTOMLEFT", 5, 0)
         for i, v in ipairs(notes) do
           local channel = SettingsService:GetChannel(v.channelID)
           GameTooltip:AddLine(channel.name, 1, 1, 1, nil)
