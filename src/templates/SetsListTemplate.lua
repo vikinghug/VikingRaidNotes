@@ -39,7 +39,7 @@ addon:Controller("VRNUI.ControlButtons", {
   end
 })
 
-local SetsListContentMixins = function(SettingsService, CommService, OnClick)
+local SetsListContentMixins = function(SettingsService, CommService)
   return {
     pool = {},
 
@@ -83,24 +83,11 @@ local SetsListContentMixins = function(SettingsService, CommService, OnClick)
         end
 
         widget:Show()
-        widget:SetScript("OnClick", OnClick)
-        widget:SetScript("OnEnter", function(this)
-          this:GetParent():GetParent().over = true
-          if (widget.id == SettingsService:SelectedNote() or widget.id == SettingsService:SelectedSet()) then
-            widget.Text:SetTextColor(VSL.Colors.YELLOW:ToList())
-          else
-            this.Text:SetTextColor(VSL.Colors.YELLOW:ToList(0.75))
-          end
-        end)
+        -- widget:SetScript("OnClick", OnClick)
 
-        widget:SetScript("OnLeave", function(this)
-          this:GetParent():GetParent().over = false
-          if (widget.id == SettingsService:SelectedNote() or widget.id == SettingsService:SelectedSet()) then
-            widget.Text:SetTextColor(VSL.Colors.YELLOW:ToList())
-          else
-            widget.Text:SetTextColor(1,1,1,1)
-          end
-        end)
+        -- widget:SetScript("OnLeave", function(this)
+
+        -- end)
       end
 
       frame:Redraw()
@@ -155,13 +142,7 @@ addon:Controller("VRNUI.SetsList", {
   function(SettingsService, CommService)
     return {
       OnBind = function(frame)
-        local OnClick = function(this)
-          SettingsService:SelectSet(this.id)
-          this:GetParent():Update(SettingsService.Sets())
-          this:GetParent():GetParent().Buttons:Update(SettingsService:SelectedSetButtons())
-        end
-
-        for k, v in pairs(SetsListContentMixins(SettingsService, CommService, OnClick)) do
+        for k, v in pairs(SetsListContentMixins(SettingsService, CommService)) do
           frame[k] = v
         end
 
@@ -171,6 +152,12 @@ addon:Controller("VRNUI.SetsList", {
           frame:GetRealHeight()
         )
       end,
+
+      OnWidgetClick = function(frame, id)
+        SettingsService:SelectSet(id)
+        frame:Update(SettingsService.Sets())
+        frame:GetParent().Buttons:Update(SettingsService:SelectedSetButtons())
+      end,
     }
   end
 })
@@ -178,24 +165,82 @@ addon:Controller("VRNUI.SetsList", {
 addon:Controller("VRNUI.NotesList", {
   "VRNUI.SettingsService",
   "VRNUI.CommService",
-  function(SettingsService, CommService)
+  "VRNUI.AuthService",
+  function(SettingsService, CommService, AuthService)
     return {
       OnBind = function(frame)
-        local OnClick = function(this)
-          SettingsService:SelectNote(this.id)
-          CommService:SetPlayerNotes(this.id)
-          this:GetParent():Update(SettingsService:SelectedSetButtons())
-          if (this:GetParent():GetParent().Redraw) then
-            this:GetParent():GetParent():Redraw()
-          end
-        end
-
-        for k, v in pairs(SetsListContentMixins(SettingsService, CommService, OnClick)) do
+        for k, v in pairs(SetsListContentMixins(SettingsService, CommService)) do
           frame[k] = v
         end
 
         frame.Update(frame, SettingsService:SelectedSetButtons())
       end,
+
+      OnWidgetClick = function(frame, id)
+        if AuthService:IsAuthorized(UnitName("player"), {2}) then
+          SettingsService:SelectNote(id)
+          CommService:SetPlayerNotes(id)
+          frame:Update(SettingsService:SelectedSetButtons())
+          if (frame:GetParent().Redraw) then
+            frame:GetParent():Redraw()
+          end
+        end
+      end,
     }
   end
+})
+
+addon:Controller("VRNUI.ListButton", {
+  "VRNUI.SettingsService",
+  "VRNUI.FormatterService",
+  function(SettingsService, FormatterService)
+    return {
+      OnBind = function(frame)
+      end,
+
+      OnClick = function(frame)
+        frame:GetParent():OnWidgetClick(frame.id)
+      end,
+
+      OnEnter = function(frame)
+        frame:GetParent():GetParent().over = true
+        if (frame.id == SettingsService:SelectedNote() or frame.id == SettingsService:SelectedSet()) then
+          frame.Text:SetTextColor(VSL.Colors.YELLOW:ToList())
+        else
+          frame.Text:SetTextColor(VSL.Colors.YELLOW:ToList(0.75))
+        end
+
+        frame:ShowTooltip()
+      end,
+
+      OnLeave = function(frame)
+        frame:GetParent():GetParent().over = false
+        if (frame.id == SettingsService:SelectedNote() or frame.id == SettingsService:SelectedSet()) then
+          frame.Text:SetTextColor(VSL.Colors.YELLOW:ToList())
+        else
+          frame.Text:SetTextColor(1,1,1,1)
+        end
+
+        frame:HideTooltip()
+      end,
+
+      ShowTooltip = function(frame)
+        local notes = SettingsService:GetNotesForButton(frame.id)
+
+        GameTooltip:SetOwner(frame, "ANCHOR_BOTTOMRIGHT", 5, 0)
+        for i, v in ipairs(notes) do
+          local channel = SettingsService:GetChannel(v.channelID)
+          GameTooltip:AddLine(channel.name, 1, 1, 1, nil)
+          GameTooltip:AddLine(FormatterService.ParseText(v.value), nil, nil, nil, true)
+          GameTooltip:AddLine(" ")
+        end
+        GameTooltip:Show()
+      end,
+
+      HideTooltip = function(frame)
+        GameTooltip:Hide()
+      end,
+    }
+  end
+
 })

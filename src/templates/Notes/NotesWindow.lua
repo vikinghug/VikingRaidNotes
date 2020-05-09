@@ -211,33 +211,16 @@ addon:Controller("VRNUI.SetsListButton", {
       OnShow = function(frame)
         local parent = frame:GetParent()
         parent.TitleBar.Text:SetParent(parent.TitleBar)
-
-        local player = UnitName("player")
-        if AuthService:IsAuthorized(player, addon.PERMISSIONS.NOTES_SHOW) then
-
-
-          parent.TitleBar.Text:SetPoint("LEFT", parent.TitleBar, "LEFT", 22, 0)
-        else
-          parent.TitleBar.Text:SetPoint("LEFT", parent.TitleBar, "LEFT", 6, 0)
-          frame:Hide()
-        end
+        parent.TitleBar.Text:SetPoint("LEFT", parent.TitleBar, "LEFT", 22, 0)
 
         for i=1,parent.TitleBar.Text:GetNumPoints() do
           VSL:Debug("point["..i.."]", parent.TitleBar.Text:GetPoint(i))
         end
       end,
 
-      OnClick = function(frame)
-        local buttons = addon.Frame.ControlButtons
-        if (buttons:IsVisible()) then
-          buttons:CloseNow()
-        else
-          buttons:Open()
-        end
-      end,
-
       OnEnter = function(frame)
         frame:SetIconColor(ICON_COLOR_HOVER)
+        addon.Frame.ControlButtons:Open()
       end,
 
       OnLeave = function(frame)

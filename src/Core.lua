@@ -41,13 +41,18 @@ function addon:OnInitialize()
     type = "data source",
     text = "Viking Raid Notes",
     icon = "Interface\\Addons\\VikingSharedLib\\assets\\textures\\viking-head-32.tga",
-    OnClick = function()
-      addon.db.profile.notesWindow.hide = not addon.db.profile.notesWindow.hide
-      addon.Frame:HandleVisibility()
+    OnClick = function(this, button)
+      if button == "RightButton" then
+        self.Options:PlayersVersionWindow()
+      else
+        addon.db.profile.notesWindow.hide = not addon.db.profile.notesWindow.hide
+        addon.Frame:HandleVisibility()
+      end
     end,
     OnTooltipShow = function(tooltip)
       tooltip:AddDoubleLine(format("%s", "VikingRaidNotes"), format("|cff777777v%s", addon.Version));
       tooltip:AddLine("|cFFCFCFCFLeft Click: |rHide/Show GUI");
+      tooltip:AddLine("|cFFCFCFCFRight Click: |rShow Version GUI");
     end
   }, self.db.profile.minimap)
 end

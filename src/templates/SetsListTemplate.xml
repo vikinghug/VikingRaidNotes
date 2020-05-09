@@ -76,6 +76,21 @@
   <Button name="VRNListButtonTemplate" virtual="true">
     <Size x="128" y="20" />
 
+    <Scripts>
+      <OnLoad>
+        VikingRaidNotes:BindViewToController(self, "VRNUI.ListButton")
+      </OnLoad>
+      <OnEnter>
+        self:OnEnter()
+      </OnEnter>
+      <OnLeave>
+        self:OnLeave()
+      </OnLeave>
+      <OnClick>
+        self:OnClick()
+      </OnClick>
+    </Scripts>
+
     <Anchors>
       <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="0" y="0" />
       <Anchor point="TOPRIGHT" relativeKey="$parent" relativePoint="TOPRIGHT" x="0" y="0" />
